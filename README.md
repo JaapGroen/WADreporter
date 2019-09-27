@@ -1,29 +1,35 @@
-# wadreporter
+# WAreporter
 
-## Project setup
-```
-npm install
-```
+> A Vue.js project for displaying results of the WADQC framework
 
-### Compiles and hot-reloads for development
-```
-npm run serve
-```
 
-### Compiles and minifies for production
-```
-npm run build
-```
+## Prerequisites
+* WADQC-server (https://bitbucket.org/MedPhysNL/wadqc/downloads/)
+* Nodejs (https://nodejs.org/en/download/)
+* Vue CLI (https://cli.vuejs.org/guide/installation.html)
 
-### Run your tests
+## Installation
+* Clone the repository
+``` bash
+> git clone https://github.com/JaapGroen/WADreporter2.git WADreporter
 ```
-npm run test
+* Enter folder and install dependencies with npm
+``` bash
+> cd WADreporter
+> npm install
 ```
-
-### Lints and fixes files
-```
-npm run lint
+* Run a test version with hot-reloading
+``` bash
+> npm run serve
 ```
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+## Production
+* Optionally edit the pre-filled api information in src/store/store.js, line 12
+``` bash
+> nano src/store/store.js
+```
+* Build the production
+``` bash
+> npm run build
+```
+* Add WADreporter to your webserver with DocumentRoot "WADreporter-folder/dist"
