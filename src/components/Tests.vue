@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Navbar></Navbar>
+    <Navbar v-bind:name="item.selector.name"></Navbar>
     <div class="grid">
       <div class="block" v-if="loading">
         <div class="item_title bgc0">Loading</div>

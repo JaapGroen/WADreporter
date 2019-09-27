@@ -1,6 +1,7 @@
 <template>
   <div class="header" v-if="isLoggedIn">
     <router-link to="/selectors" tag="h1" class="pointer">WADreporter</router-link>
+    {{name}}
     <div class="menu" @mouseover="MenuVisible=true" @mouseleave="MenuVisible=false">
       <button class="button menuitem inputWithIcon" v-if="FilterBoxVisible || MenuVisible">
         <input style="height:23px;" type="text" class="textbox" v-model="selectorFilter" @input="changeselectorFilter"/>
@@ -26,6 +27,7 @@
 
 <script>
   export default {
+    props:['name'],
     data(){
       return {
         FilterBoxVisible:false,
