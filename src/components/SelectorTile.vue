@@ -1,19 +1,27 @@
 <template>
-  <router-link :to="{name:'Tests',params:{idSelector:idSelector,idResult:idResult}}" tag="div" class="block">
+<!--  <router-link :to="{name:'Tests',params:{idSelector:idSelector,idResult:idResult}}" tag="div" class="block"> -->
+  <div class="block">
     <div class="item_title" v-bind:class="testclass">{{item.selector.name}}</div>
     <div class="item_content" v-if="item.loading">
       <i class="fas fa-sun fa-2x fa-spin"></i>
     </div>
-    <div class="item_content" v-if="!item.loading">{{item.selector.description}}</div>
+    <router-link :to="{name:'Tests',params:{idSelector:idSelector,idResult:idResult}}" tag="div" class="item_content" v-if="!item.loading">
+      {{item.selector.description}}
+    </router-link>
+<!--    <div class="item_content" v-if="!item.loading">{{item.selector.description}}</div> -->
     <div class="item_footer" v-bind:class="dateclass">
       {{item.result.date | prettydate}}
+      <button class="smbutton" @click="openAnalytics"><i class="fas fa-info-circle"></i> Analytics</button>
     </div>
-  </router-link>
+    <SelectorAnalytics v-if="showAnalytics" v-on:closePopup="closePopup" v-bind:selector="item.selector"></SelectorAnalytics>
+<!--  </router-link> -->
+  </div>
 </template>
 
 
 <script>
 import {HTTP} from '../main'
+import SelectorAnalytics from '@/components/SelectorAnalytics'
 
  export default {
   props: ['selector'],
@@ -27,7 +35,8 @@ import {HTTP} from '../main'
         componentKey: 0,
         idSelector:this.$props.selector.id,
         idResult:0,
-        apiURL:'http://'+this.$store.getters.api.ip+':'+this.$store.getters.api.port+'/api'
+        apiURL:'http://'+this.$store.getters.api.ip+':'+this.$store.getters.api.port+'/api',
+        showAnalytics:false,
       }
   },
   created(){
@@ -42,9 +51,18 @@ import {HTTP} from '../main'
         console.log(error)
     })
   },
+  components:{
+    SelectorAnalytics
+  },
   methods:{
     forceRerender(){
       this.componentKey += 1;
+    },
+    openAnalytics(){
+      this.showAnalytics=true
+    },
+    closePopup(){
+      this.showAnalytics=false
     }
   },
   computed:{
