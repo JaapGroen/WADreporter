@@ -15,10 +15,6 @@
         <i v-if="!loaded" style="margin-top:50px;margin-bottom:50px;" class="fas fa-sun fa-2x fa-spin"></i>
       </div>
       <div class="overlayfooter">
-        <!-- <button v-for="(item,index) in items" @click="unpinTest(item)">
-          {{item.test.display_name || item.test.name}}
-          <i class="far fa-trash-alt"></i>
-        </button>  -->
         <div>
           <button @click="csvExport()" class="smbutton" v-if="loaded"><i class="fas fa-download"></i> Export</button>
           <button @click="resetZoom()" class="smbutton" v-if="loaded"><i class="fas fa-search-minus"></i> Reset</button>

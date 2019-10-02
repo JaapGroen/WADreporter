@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Navbar></Navbar>
+    <Navbar v-bind:selector="selector"></Navbar>
     <div v-if="loaded" class="grid">
 	<TileGroup v-for="group in groupArray" v-bind:group="group" :key="group.name" v-if="group.selectors.length>0"></TileGroup>
     </div>
@@ -19,7 +19,8 @@
         groupObject:{'[no group]':{name:'[no group]',selectors:[]}},
         loaded:false,
         apiURL:'http://'+this.$store.getters.api.ip+':'+this.$store.getters.api.port+'/api',
-        groupArray:[]
+        groupArray:[],
+        selector:{name:'selectors',id:0}
       }
     },
 	mounted(){

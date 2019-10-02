@@ -7,17 +7,27 @@
       </div>
       <div class="overlaycontent">
         <div class="overlaycontentsub">
-          <PieChart v-if="loaded" :chartdata="chartDataResults" :options="chartOptions" :styles="chartStyle"></PieChart>
-          <div v-if="loaded">{{chartDataResults.datasets[0].data.reduce((a, b) => a + b, 0)}} results</div>
+          <PieChart ref="PieChart" v-if="loaded" :chartdata="chartData" :options="chartOptions" :styles="chartStyle"></PieChart>
           <i v-if="!loaded" style="margin-top:50px;margin-bottom:50px;" class="fas fa-sun fa-2x fa-spin"></i>
         </div>
-        <div class="overlaycontentsub">
-          <PieChart v-if="loaded" :chartdata="chartDataTests" :options="chartOptions" :styles="chartStyle"></PieChart>
-          <div v-if="loaded">{{chartDataTests.datasets[0].data.reduce((a, b) => a + b, 0)}} tests, worst test: {{worstTest[1]}}x {{worstTest[0]}}</div>
-          <i v-if="!loaded" style="margin-top:50px;margin-bottom:50px;" class="fas fa-sun fa-2x fa-spin"></i>
+        <div class="overlaycontentsub" v-if="analyzeResults">
+          <div v-if="loaded">{{Analytics.numberOfResults}} results</div>
+          <div v-if="!loaded">Running analytics...</div>
+        </div>
+        <div class="overlaycontentsub" v-if="!analyzeResults">
+          <div v-if="loaded">
+          {{Analytics.numberOfTests}} tests
+          <br>
+          {{Analytics.numberOfTests/Analytics.numberOfResults}} tests per result
+          <br>
+          {{Analytics.worstTest}}
+          </div>
+          <div v-if="!loaded">Running analytics...</div>
         </div>
       </div>
       <div class="overlayfooter">
+        <button class="smbutton" @click="switchType" v-if="analyzeResults">Results <i class="fas fa-arrows-alt-h"></i> Tests</button>
+        <button class="smbutton" @click="switchType" v-if="!analyzeResults">Tests <i class="fas fa-arrows-alt-h"></i> Results</button>
       </div>
     </div>
   </div>
@@ -26,6 +36,7 @@
 <script>
 import {HTTP} from '@/main'
 import PieChart from '@/functions/PieChart'
+import SelectorAnalyzer from '@/functions/SelectorAnalyzer'
 
 export default {
   props:['selector'],
@@ -37,27 +48,18 @@ export default {
         numberOfResults:0,
         apiURL:'http://'+this.$store.getters.api.ip+':'+this.$store.getters.api.port+'/api',
         chartOptions:{hoverBorderWidth: 20},
-        chartDataResults:{
+        chartData:{
           labels:["OK","warning","danger"],
           datasets:[
             {
               label: "Results",
               backgroundColor: ["#75EB27","#FF8820","#EE1947"],
-              data:[0,0,0]
+              data:[]
             }
           ]
         },
-        chartDataTests:{
-          labels:["OK","warning","danger"],
-          datasets:[
-            {
-              label: "Tests",
-              backgroundColor: ["#75EB27","#FF8820","#EE1947"],
-              data:[0,0,0]
-            }
-          ]
-        },
-        worstTest:'',
+        Analytics:{},
+        analyzeResults:true
       }
   },
   mounted(){
@@ -65,55 +67,29 @@ export default {
   },
   methods:{
     closePopup(){
-      this.$emit('closePopup','thanks')
+      this.$emit('closeAnalytics','thanks')
+    },
+    switchType(){
+      this.analyzeResults=!this.analyzeResults
+      if(this.analyzeResults){
+          this.chartData.datasets[0].data=this.Analytics.dataResults
+      } else {
+          this.chartData.datasets[0].data=this.Analytics.dataResults
+      }
+      this.reloadPieChart()
     },
     forceRerender(){
       this.componentKey += 1;
     },
+    reloadPieChart(){
+        this.$refs.PieChart.reloadGraph();
+    },
     getAllResults(){
-      var loading_data=[]
-      var worstTest={}
-      HTTP.get(this.apiURL+'/selectors/'+this.selector.id+'/results')
-        .then((resp)=>{
-        this.numberOfResults=resp.data.results.length
-        for (let i=0;i<resp.data.results.length;i++){
-          loading_data.push(HTTP.get(this.apiURL+'/selectors/'+this.selector.id+'/results/'+resp.data.results[i].id))
-        }
-        Promise.all(loading_data).then((loaded_data)=>{
-          for (let i=0;i<loaded_data.length;i++){
-            if(loaded_data[i].data.result.status.tests==1){
-              this.chartDataResults.datasets[0].data[0]++
-            } else if (loaded_data[i].data.result.status.tests==2){
-              this.chartDataResults.datasets[0].data[1]++
-            } else if (loaded_data[i].data.result.status.tests==3){
-              this.chartDataResults.datasets[0].data[2]++
-            }
-            for (let j=0;j<loaded_data[i].data.tests.length;j++){
-              if(loaded_data[i].data.tests[j].type=='float' || loaded_data[i].data.tests[j].type=='string'){
-                if(loaded_data[i].data.tests[j].status==1){
-                  this.chartDataTests.datasets[0].data[0]++
-                } else if (loaded_data[i].data.tests[j].status==2){
-                  this.chartDataTests.datasets[0].data[1]++
-                } else if (loaded_data[i].data.tests[j].status==3){
-                   this.chartDataTests.datasets[0].data[2]++
-                   if (worstTest.hasOwnProperty(loaded_data[i].data.tests[j].display_name)){
-                     worstTest[loaded_data[i].data.tests[j].display_name]++
-                   } else {
-                     worstTest[loaded_data[i].data.tests[j].display_name]=1
-                   }
-                }
-              }
-            }
-          }
-          var sortedTests=[]
-          for (var test in worstTest){
-            sortedTests.push([test,worstTest[test]])
-          }
-          sortedTests.sort((a,b)=>{return a[1]-b[1]})
-          this.worstTest=sortedTests[sortedTests.length-1]
-          this.loaded=true
-        })  
-      })
+        SelectorAnalyzer.analyzeSelector(this.selector.id).then((data)=>{
+            this.Analytics=data
+            this.chartData.datasets[0].data=this.Analytics.dataResults
+            this.loaded=true
+        })
     },
   },
   components:{

@@ -1,27 +1,18 @@
 <template>
-<!--  <router-link :to="{name:'Tests',params:{idSelector:idSelector,idResult:idResult}}" tag="div" class="block"> -->
-  <div class="block">
+  <router-link :to="{name:'Tests',params:{idSelector:idSelector,idResult:idResult}}" tag="div" class="block">
     <div class="item_title" v-bind:class="testclass">{{item.selector.name}}</div>
     <div class="item_content" v-if="item.loading">
       <i class="fas fa-sun fa-2x fa-spin"></i>
     </div>
-    <router-link :to="{name:'Tests',params:{idSelector:idSelector,idResult:idResult}}" tag="div" class="item_content" v-if="!item.loading">
-      {{item.selector.description}}
-    </router-link>
-<!--    <div class="item_content" v-if="!item.loading">{{item.selector.description}}</div> -->
+    <div class="item_content" v-if="!item.loading">{{item.selector.description}}</div>
     <div class="item_footer" v-bind:class="dateclass">
       {{item.result.date | prettydate}}
-      <button class="smbutton" @click="openAnalytics"><i class="fas fa-info-circle"></i> Analytics</button>
     </div>
-    <SelectorAnalytics v-if="showAnalytics" v-on:closePopup="closePopup" v-bind:selector="item.selector"></SelectorAnalytics>
-<!--  </router-link> -->
-  </div>
+  </router-link>
 </template>
-
 
 <script>
 import {HTTP} from '../main'
-import SelectorAnalytics from '@/components/SelectorAnalytics'
 
  export default {
   props: ['selector'],
@@ -36,14 +27,13 @@ import SelectorAnalytics from '@/components/SelectorAnalytics'
         idSelector:this.$props.selector.id,
         idResult:0,
         apiURL:'http://'+this.$store.getters.api.ip+':'+this.$store.getters.api.port+'/api',
-        showAnalytics:false,
       }
   },
   created(){
     HTTP.get(this.apiURL+'/selectors/'+this.$props.selector.id+'/results/last')
     .then(resp => {
         this.item.result=resp.data.result
-        this.idResult=resp.data.result.id
+        this.idResult=(resp.data.result.id || 0)
         this.item.tests=resp.data.tests
         this.item.loading=false;
         this.forceRerender();
@@ -52,18 +42,11 @@ import SelectorAnalytics from '@/components/SelectorAnalytics'
     })
   },
   components:{
-    SelectorAnalytics
   },
   methods:{
     forceRerender(){
       this.componentKey += 1;
     },
-    openAnalytics(){
-      this.showAnalytics=true
-    },
-    closePopup(){
-      this.showAnalytics=false
-    }
   },
   computed:{
     testclass: function(){

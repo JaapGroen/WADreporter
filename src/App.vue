@@ -21,7 +21,6 @@
     data(){
       return {
         GraphVisible:false,
-        Pin:{},
       }
     },
     components: { 

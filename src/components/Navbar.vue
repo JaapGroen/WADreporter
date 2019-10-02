@@ -1,7 +1,8 @@
 <template>
-  <div class="header" v-if="isLoggedIn">
+  <div>
+  <div class="header" v-if="isLoggedIn && selector">
     <router-link to="/selectors" tag="h1" class="pointer">WADreporter</router-link>
-    {{name}}
+    {{selector.name}}
     <div class="menu" @mouseover="MenuVisible=true" @mouseleave="MenuVisible=false">
       <button class="button menuitem inputWithIcon" v-if="FilterBoxVisible || MenuVisible">
         <input style="height:23px;" type="text" class="textbox" v-model="selectorFilter" @input="changeselectorFilter"/>
@@ -15,6 +16,10 @@
         <i class="fas fa-sign-out-alt"></i>
         Logout
       </button>
+      <button class="button menuitem" @click="openAnalytics" v-if="MenuVisible && selector.id>0">
+        <i class="fas fa-info-circle"></i>
+        Analytics
+      </button>
       <button class="button menuitem">
         <i class="fas fa-caret-left" v-if="!MenuVisible"></i>
         <i class="fas fa-caret-right" v-if="MenuVisible"></i>
@@ -22,17 +27,23 @@
          {{user}}
       </button>
     </div>
+    
+  </div>
+  <SelectorAnalytics v-if="showAnalytics" v-on:closeAnalytics="closeAnalytics" v-bind:selector="selector"></SelectorAnalytics>
   </div>
 </template>
 
 <script>
+import SelectorAnalytics from '@/components/SelectorAnalytics'
+
   export default {
-    props:['name'],
+    props:['selector'],
     data(){
       return {
         FilterBoxVisible:false,
         selectorFilter:'',
         MenuVisible:false,
+        showAnalytics:false
       }
     },  
     computed : {
@@ -71,7 +82,16 @@
       showGraph(){
           this.$emit('showGraph','thanks')
       },
+      openAnalytics(){
+          this.showAnalytics=true
+      },
+      closeAnalytics(){
+          this.showAnalytics=false
+      }
     },
+	components:{
+		SelectorAnalytics
+	}
   }
 </script>
 

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Navbar v-bind:name="item.selector.name"></Navbar>
+    <Navbar v-bind:selector="item.selector"></Navbar>
     <div class="grid">
       <div class="block" v-if="loading">
         <div class="item_title bgc0">Loading</div>
@@ -9,8 +9,7 @@
         </div>
         <div class="item_footer"></div>
       </div>
-	<TestTile v-for="test in filteredTests" v-bind:test="test" :selector="item.selector" :result="item.result" :key="test.id" ></TestTile>
-      </div>
+	  <TestTile v-for="test in filteredTests" v-bind:test="test" :selector="item.selector" :result="item.result" :key="test.type+test.id" ></TestTile>
     </div>
   </div>
 </template>
