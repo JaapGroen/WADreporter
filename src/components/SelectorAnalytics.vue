@@ -2,7 +2,8 @@
   <div class="pageoverlay">
     <div class="overlaybox">
       <div class="overlaytop">
-        {{selector.name}}
+        <div v-if="analyzeResults">Analysis of the results of {{selector.name}}</div>
+        <div v-if="!analyzeResults">Analysis of the tests of {{selector.name}}</div>
         <i class="fas fa-times pointer" @click="closePopup"></i>
       </div>
       <div class="overlaycontent">
@@ -26,8 +27,8 @@
         </div>
       </div>
       <div class="overlayfooter">
-        <button class="smbutton" @click="switchType" v-if="analyzeResults">Results <i class="fas fa-arrows-alt-h"></i> Tests</button>
-        <button class="smbutton" @click="switchType" v-if="!analyzeResults">Tests <i class="fas fa-arrows-alt-h"></i> Results</button>
+        <button class="smbutton" @click="switchType" v-if="analyzeResults">Results <i class="fas fa-arrow-right"></i> Tests</button>
+        <button class="smbutton" @click="switchType" v-if="!analyzeResults">Tests <i class="fas fa-arrow-right"></i> Results</button>
       </div>
     </div>
   </div>
@@ -47,7 +48,19 @@ export default {
         componentKey: 0,
         numberOfResults:0,
         apiURL:'http://'+this.$store.getters.api.ip+':'+this.$store.getters.api.port+'/api',
-        chartOptions:{hoverBorderWidth: 20},
+        chartOptions:{
+            hoverBorderWidth: 20,
+            plugins:{
+                labels:{
+                    render:function(args){
+                        return 'N = '+args.value+'\n ('+args.percentage+'%)'
+                    },
+                    fontColor:'white',
+                    fontSize:20,
+                    precision:2,
+                }
+            }
+        },
         chartData:{
           labels:["OK","warning","danger"],
           datasets:[

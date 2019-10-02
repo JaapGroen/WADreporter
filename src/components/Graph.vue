@@ -264,7 +264,6 @@ export default {
     },
     components:{
         LineChart,
-//        ChartJSPluginZoom
     },
     computed: {
         chartStyle () {
