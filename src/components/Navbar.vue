@@ -4,10 +4,6 @@
     <router-link to="/selectors" tag="h1" class="pointer">WADreporter</router-link>
     {{selector.name}}
     <div class="menu" @mouseover="MenuVisible=true" @mouseleave="MenuVisible=false">
-      <button class="button menuitem inputWithIcon" v-if="FilterBoxVisible || MenuVisible">
-        <input style="height:23px;" type="text" class="textbox" v-model="selectorFilter" @input="changeselectorFilter"/>
-        <i class="fas fa-times" @click="clearFilter"></i>
-      </button>
       <button class="button menuitem"  v-if="MenuVisible" @click="reloadSelectors">
         <i class="fas fa-sync"></i>
         Reload
@@ -19,6 +15,10 @@
       <button class="button menuitem" @click="openAnalytics" v-if="MenuVisible && selector.id>0">
         <i class="fas fa-info-circle"></i>
         Analytics
+      </button>
+      <button class="button menuitem inputWithIcon" v-if="MenuVisible || selectorFilter.length>0">
+        <input style="height:23px;" type="text" class="textbox" v-model="selectorFilter" @input="changeselectorFilter"/>
+        <i class="fas fa-times" @click="clearFilter"></i>
       </button>
       <button class="button menuitem">
         <i class="fas fa-caret-left" v-if="!MenuVisible"></i>
@@ -41,7 +41,7 @@ import SelectorAnalytics from '@/components/SelectorAnalytics'
     data(){
       return {
         FilterBoxVisible:false,
-        selectorFilter:'',
+        selectorFilter:this.$store.getters.selectorFilter,
         MenuVisible:false,
         showAnalytics:false
       }

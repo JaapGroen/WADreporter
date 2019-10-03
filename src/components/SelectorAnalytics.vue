@@ -7,28 +7,32 @@
         <i class="fas fa-times pointer" @click="closePopup"></i>
       </div>
       <div class="overlaycontent">
-        <div class="overlaycontentsub">
-          <PieChart ref="PieChart" v-if="loaded" :chartdata="chartData" :options="chartOptions" :styles="chartStyle"></PieChart>
+        <div class="overlaycontentsub-v" v-if="analyzeResults">
+          <PieChart ref="PieChart" v-if="loaded" :chartdata="pieChartData" :options="pieChartOptions" :styles="chartStyle"></PieChart>
           <i v-if="!loaded" style="margin-top:50px;margin-bottom:50px;" class="fas fa-sun fa-2x fa-spin"></i>
         </div>
-        <div class="overlaycontentsub" v-if="analyzeResults">
-          <div v-if="loaded">{{Analytics.numberOfResults}} results</div>
+        <div class="overlaycontentsub-h" v-if="!analyzeResults">
+          <BarChart ref="BarChart" v-if="loaded" :chartdata="barChartData" :options="barChartOptions" :styles="chartStyle"></BarChart>
+          <i v-if="!loaded" style="margin-top:50px;margin-bottom:50px;" class="fas fa-sun fa-2x fa-spin"></i>
+        </div>
+        <div class="overlaycontentsub-v" v-if="analyzeResults">
+          <div v-if="loaded">Total number of results: {{Analytics.numberOfResults}}</div>
           <div v-if="!loaded">Running analytics...</div>
         </div>
-        <div class="overlaycontentsub" v-if="!analyzeResults">
+        
+        <div class="overlaycontentsub-h" v-if="!analyzeResults">
           <div v-if="loaded">
-          {{Analytics.numberOfTests}} tests
+          Total number of tests: {{Analytics.numberOfTests}}
           <br>
-          {{Analytics.numberOfTests/Analytics.numberOfResults}} tests per result
-          <br>
-          {{Analytics.worstTest}}
+          Averaged number of tests per result: {{Analytics.numberOfTests/Analytics.numberOfResults}}
           </div>
           <div v-if="!loaded">Running analytics...</div>
         </div>
+        
       </div>
       <div class="overlayfooter">
-        <button class="smbutton" @click="switchType" v-if="analyzeResults">Results <i class="fas fa-arrow-right"></i> Tests</button>
-        <button class="smbutton" @click="switchType" v-if="!analyzeResults">Tests <i class="fas fa-arrow-right"></i> Results</button>
+        <button class="smbutton" @click="switchType" v-if="analyzeResults"><i class="fas fa-exchange-alt"></i> Tests</button>
+        <button class="smbutton" @click="switchType" v-if="!analyzeResults"><i class="fas fa-exchange-alt"></i> Results</button>
       </div>
     </div>
   </div>
@@ -37,6 +41,7 @@
 <script>
 import {HTTP} from '@/main'
 import PieChart from '@/functions/PieChart'
+import BarChart from '@/functions/BarChart'
 import SelectorAnalyzer from '@/functions/SelectorAnalyzer'
 
 export default {
@@ -48,8 +53,12 @@ export default {
         componentKey: 0,
         numberOfResults:0,
         apiURL:'http://'+this.$store.getters.api.ip+':'+this.$store.getters.api.port+'/api',
-        chartOptions:{
+        pieChartOptions:{
             hoverBorderWidth: 20,
+            maintainAspectRatio:false,
+            legend:{
+                position:'left',
+            },
             plugins:{
                 labels:{
                     render:function(args){
@@ -61,7 +70,7 @@ export default {
                 }
             }
         },
-        chartData:{
+        pieChartData:{
           labels:["OK","warning","danger"],
           datasets:[
             {
@@ -71,8 +80,56 @@ export default {
             }
           ]
         },
+        barChartData:{
+            labels:[],
+            datasets:[{
+                label:'OK',
+                backgroundColor:"#75EB27",
+                data:[]
+            },{
+                label:'warning',
+                backgroundColor:"#FF8820",
+                data:[]
+            },{
+                label:'danger',
+                backgroundColor:"#EE1947",
+                data:[]
+            }]
+        },
+        barChartOptions:{
+            maintainAspectRatio:false,
+            legend:{
+                position:'top',
+                labels:{
+                    padding: 25,
+                },
+            },
+            scales:{
+                xAxes:[{
+                    stacked:true,
+                    display:false,
+                }],
+                yAxes:[{stacked:true,}],
+            },
+            plugins:{
+                labels:{
+                    render:function(args){
+                        if (args.value>0){
+                            var label = args.value
+                        } else {
+                            var label=''
+                        }
+                        return label
+                    },
+                    fontColor:'white',
+                    fontSize:12,
+                    precision:2,
+
+                }
+            }
+        },
         Analytics:{},
-        analyzeResults:true
+        analyzeResults:true,
       }
   },
   mounted(){
@@ -89,7 +146,7 @@ export default {
       } else {
           this.chartData.datasets[0].data=this.Analytics.dataResults
       }
-      this.reloadPieChart()
+      //this.reloadPieChart()
     },
     forceRerender(){
       this.componentKey += 1;
@@ -100,18 +157,27 @@ export default {
     getAllResults(){
         SelectorAnalyzer.analyzeSelector(this.selector.id).then((data)=>{
             this.Analytics=data
-            this.chartData.datasets[0].data=this.Analytics.dataResults
+            this.pieChartData.datasets[0].data=this.Analytics.dataResults
+            
+            for (var t in this.Analytics.dataTests){
+                this.barChartData.labels.push(t)
+                this.barChartData.datasets[0].data.push(this.Analytics.dataTests[t][0])
+                this.barChartData.datasets[1].data.push(this.Analytics.dataTests[t][1])
+                this.barChartData.datasets[2].data.push(this.Analytics.dataTests[t][2])
+            }
             this.loaded=true
         })
     },
   },
   components:{
-    PieChart
+    PieChart,
+    BarChart
   },
   computed: {
     chartStyle(){
       return {
         height:'100%',
+        width:'100%',
         position: 'relative'
       }
     },
@@ -120,7 +186,7 @@ export default {
 </script>
 
 <style>
-.overlaycontentsub{
+.overlaycontentsub-v{
   display:flex;
   flex-direction:column;
   align-items:center;
@@ -129,5 +195,14 @@ export default {
   width:50%;
 }
 
+.overlaycontentsub-h{
+  display:flex;
+  flex-direction:row;
+  align-items:center;
+  justify-content:space-around;
+  height:50%;
+  min-height:250px;
+  width:100%;
+}
 
 </style>
