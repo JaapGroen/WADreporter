@@ -1,29 +1,29 @@
 <template>
-  <div>
-    <Navbar v-bind:selector="selector"></Navbar>
-    <div v-if="loaded" class="grid">
-	<TileGroup v-for="group in groupArray" v-bind:group="group" :key="group.name" v-if="group.selectors.length>0"></TileGroup>
+    <div>
+        <Navbar v-bind:selector="selector"></Navbar>
+        <div v-if="loaded" class="grid">
+            <TileGroup v-for="group in groupArray" v-bind:group="group" :key="group.name" v-if="group.selectors.length>0"></TileGroup>
+        </div>
     </div>
-  </div>
 </template>
 
 <script>
-  import TileGroup from '@/components/TileGroup'
-  import {HTTP} from '../main';
-  import Navbar from '@/components/Navbar'
-  
-  export default {
+import TileGroup from '@/components/TileGroup'
+import {HTTP} from '../main';
+import Navbar from '@/components/Navbar'
+
+export default {
     data(){
-      return {
-        selectors:this.$store.getters.selectors,
-        groupObject:{'[no group]':{name:'[no group]',selectors:[]}},
-        loaded:false,
-        apiURL:'http://'+this.$store.getters.api.ip+':'+this.$store.getters.api.port+'/api',
-        groupArray:[],
-        selector:{name:'selectors',id:0}
-      }
+        return {
+            selectors:this.$store.getters.selectors,
+            groupObject:{'[no group]':{name:'[no group]',selectors:[]}},
+            loaded:false,
+            apiURL:'http://'+this.$store.getters.api.ip+':'+this.$store.getters.api.port+'/api',
+            groupArray:[],
+            selector:{name:'selectors',id:0}
+        }
     },
-	mounted(){
+    mounted(){
         HTTP.get(this.apiURL+'/selectors').then(resp => {
             this.loaded=true;
             for (let i=0;i<resp.data.selectors.length;i++){
@@ -53,7 +53,7 @@
         TileGroup,
         Navbar
     },
-  }
+}
 </script>
 
 <style>

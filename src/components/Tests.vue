@@ -1,17 +1,17 @@
 <template>
-  <div>
-    <Navbar v-bind:selector="item.selector"></Navbar>
-    <div class="grid">
-      <div class="block" v-if="loading">
-        <div class="item_title bgc0">Loading</div>
-        <div class="item_content">
-          <i class="fas fa-sun fa-2x fa-spin"></i>
+    <div>
+        <Navbar v-bind:selector="item.selector"></Navbar>
+        <div class="grid">
+            <div class="block" v-if="loading">
+                <div class="item_title bgc0">Loading</div>
+                <div class="item_content">
+                    <i class="fas fa-sun fa-2x fa-spin"></i>
+                </div>
+                <div class="item_footer"></div>
+            </div>
+            <TestTile v-for="test in filteredTests" v-bind:test="test" :selector="item.selector" :result="item.result" :key="test.type+test.id" ></TestTile>
         </div>
-        <div class="item_footer"></div>
-      </div>
-	  <TestTile v-for="test in filteredTests" v-bind:test="test" :selector="item.selector" :result="item.result" :key="test.type+test.id" ></TestTile>
     </div>
-  </div>
 </template>
 
 <script>
@@ -31,7 +31,8 @@
     },
     mounted(){
         HTTP.get(this.apiURL+'/selectors/'+this.idSelector+'/results/'+this.idResult)
-            .then(resp => {
+        .then(resp => {
+                console.log(resp.data)
                 this.item=resp.data
                 this.loading=false;
         }, error => {

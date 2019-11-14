@@ -1,42 +1,40 @@
 <template>
-  <div>
-  <div class="header" v-if="isLoggedIn && selector">
-    <router-link to="/selectors" tag="h1" class="pointer">WADreporter</router-link>
-    {{selector.name}}
-    <div class="menu" @mouseover="MenuVisible=true" @mouseleave="MenuVisible=false">
-      <button class="button menuitem"  v-if="MenuVisible" @click="reloadSelectors">
-        <i class="fas fa-sync"></i>
-        Reload
-      </button>
-      <button class="button menuitem" @click="logout"  v-if="MenuVisible">
-        <i class="fas fa-sign-out-alt"></i>
-        Logout
-      </button>
-      <button class="button menuitem" @click="openAnalytics" v-if="MenuVisible && selector.id>0">
-        <i class="fas fa-info-circle"></i>
-        Analytics
-      </button>
-      <button class="button menuitem inputWithIcon" v-if="MenuVisible || selectorFilter.length>0">
-        <input style="height:23px;" type="text" class="textbox" v-model="selectorFilter" @input="changeselectorFilter"/>
-        <i class="fas fa-times" @click="clearFilter"></i>
-      </button>
-      <button class="button menuitem">
-        <i class="fas fa-caret-left" v-if="!MenuVisible"></i>
-        <i class="fas fa-caret-right" v-if="MenuVisible"></i>
-        <i class="fas fa-user"></i>
-         {{user}}
-      </button>
+    <div>
+        <div class="header" v-if="isLoggedIn && selector">
+            <router-link to="/selectors" tag="h1" class="pointer">WADreporter <span>/ {{selector.name}}</span></router-link>
+            <div class="menu" @mouseover="MenuVisible=true" @mouseleave="MenuVisible=false">
+                <button class="button menuitem"  v-if="MenuVisible" @click="reloadSelectors">
+                    <i class="fas fa-sync"></i>
+                    Reload
+                </button>
+                <button class="button menuitem" @click="logout"  v-if="MenuVisible">
+                    <i class="fas fa-sign-out-alt"></i>
+                    Logout
+                </button>
+                <button class="button menuitem" @click="openAnalytics" v-if="MenuVisible && selector.id>0">
+                    <i class="fas fa-info-circle"></i>
+                    Analytics
+                    </button>
+                <button class="button menuitem inputWithIcon" v-if="MenuVisible || selectorFilter.length>0">
+                    <input style="height:23px;" type="text" class="textbox" v-model="selectorFilter" @input="changeselectorFilter"/>
+                    <i class="fas fa-times" @click="clearFilter"></i>
+                </button>
+                <button class="button menuitem">
+                    <i class="fas fa-caret-left" v-if="!MenuVisible"></i>
+                    <i class="fas fa-caret-right" v-if="MenuVisible"></i>
+                    <i class="fas fa-user"></i>
+                    {{user.name}} ({{user.role.name}})
+                </button>
+            </div>
+        </div>
+        <SelectorAnalytics v-if="showAnalytics" v-on:closeAnalytics="closeAnalytics" v-bind:selector="selector"></SelectorAnalytics>
     </div>
-    
-  </div>
-  <SelectorAnalytics v-if="showAnalytics" v-on:closeAnalytics="closeAnalytics" v-bind:selector="selector"></SelectorAnalytics>
-  </div>
 </template>
 
 <script>
 import SelectorAnalytics from '@/components/SelectorAnalytics'
 
-  export default {
+export default {
     props:['selector'],
     data(){
       return {
@@ -108,6 +106,10 @@ import SelectorAnalytics from '@/components/SelectorAnalytics'
   position:fixed;
   width:100%;
   z-index:10;
+}
+
+h1 span{
+    font-size:16px;
 }
 
 .textbox{

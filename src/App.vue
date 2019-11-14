@@ -5,7 +5,6 @@
         integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" 
         crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
-    <Graph v-if="GraphVisible" v-on:closeGraph="closeGraph" v-bind:items="pins" :key="1"></Graph>
     <router-view></router-view>
   </div>
 </template>
@@ -20,16 +19,13 @@
     name: 'app',
     data(){
       return {
-        GraphVisible:false,
       }
     },
     components: { 
-      'Graph': Graph
     },
     created: function () {
       HTTP.interceptors.response.use(undefined, err => {
         return new Promise(function (resolve, reject) {
-          console.log(err)
           if ((err.response.status === 401 || err.response.status === 422) && err.config && !err.config.__isRetryRequest) {
             store.dispatch('logout')
             .then(() => {
@@ -39,14 +35,6 @@
           throw err;
         });
       });
-    },
-    methods:{
-        showGraph(){
-            this.GraphVisible=true;
-        },
-        closeGraph(){
-            this.GraphVisible=false;
-        },
     },
   }
 </script>

@@ -38,7 +38,12 @@ import {HTTP} from '../main'
         this.item.loading=false;
         this.forceRerender();
     }, error => {
-        console.log(error)
+        if (error.response.status==404){
+            this.item.loading = false;
+            this.item.selector.description = error.response.data.msg
+        } else {
+            console.log(error)
+        }
     })
   },
   components:{
