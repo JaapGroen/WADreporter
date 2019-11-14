@@ -9,17 +9,18 @@
                 </div>
                 <div class="item_footer"></div>
             </div>
-            <TestTile v-for="test in filteredTests" v-bind:test="test" :selector="item.selector" :result="item.result" :key="test.type+test.id" ></TestTile>
+            <TestTile v-for="test in sortedTests" v-bind:test="test" :selector="item.selector" :result="item.result" :key="test.type+test.id" ></TestTile>
         </div>
     </div>
 </template>
 
 <script>
-  import TestTile from '@/components/TestTile'
-  import {HTTP} from '../main'
-  import Navbar from '@/components/Navbar'
+import TestTile from '@/components/TestTile'
+import {HTTP} from '../main'
+import Navbar from '@/components/Navbar'
+import _ from 'lodash'
   
-  export default {
+export default {
     data(){
       return {
         idSelector:this.$route.params.idSelector,
@@ -32,7 +33,6 @@
     mounted(){
         HTTP.get(this.apiURL+'/selectors/'+this.idSelector+'/results/'+this.idResult)
         .then(resp => {
-                console.log(resp.data)
                 this.item=resp.data
                 this.loading=false;
         }, error => {
@@ -40,16 +40,23 @@
         })
     },
     computed:{
-      filteredTests(){
-        const testFilter=this.$store.getters.selectorFilter
-        return this.item.tests.filter(function(el){
-          return el.name.toLowerCase().includes(testFilter)
-        })
-      }
+        filteredTests(){
+            const testFilter=this.$store.getters.selectorFilter
+            return this.item.tests.filter(function(el){
+                return el.name.toLowerCase().includes(testFilter)
+            })
+        },
+        sortedTests(){
+            var tests = _.orderBy(this.filteredTests,[
+                function (item) { return item.status; },
+                function (item) { return item.display_name; }
+            ],["desc","asc"])
+            return tests
+        }
     },   
     components: {
         TestTile,
         Navbar
     },
-  }
+}
 </script>

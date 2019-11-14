@@ -76,10 +76,10 @@ var loadGraph = (idSelector,idResult,idTest,RType) => {
         .then(resp => {
             var data=resp.data.history
             data.forEach((dat) => {
-                dat.x=str2date(dat.date);
-                delete dat.date
-                dat.y=dat.val
-                delete dat.val
+                dat.x=str2date(dat.result.date);
+                delete dat.result.date
+                dat.y=dat.test.value
+                delete dat.test.value
                 if(RType=='datetime'){
                     dat.y=1
                 }
