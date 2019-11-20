@@ -12,7 +12,7 @@
           <i v-if="!loaded" style="margin-top:50px;margin-bottom:50px;" class="fas fa-sun fa-2x fa-spin"></i>
         </div>
         <div class="overlaycontentsub-h" v-if="!analyzeResults">
-          <BarChart ref="BarChart" v-if="loaded" :chartdata="barChartData" :options="barChartOptions" :styles="chartStyle"></BarChart>
+          <BarChart ref="BarChart" v-if="loaded" :chartdata="barChartData" :options="barChartOptions" :styles="chartStyle" style="cursor:pointer;"></BarChart>
           <i v-if="!loaded" style="margin-top:50px;margin-bottom:50px;" class="fas fa-sun fa-2x fa-spin"></i>
         </div>
         <div class="overlaycontentsub-v" v-if="analyzeResults">
@@ -52,7 +52,6 @@ export default {
         loaded:false,
         componentKey: 0,
         numberOfResults:0,
-        apiURL:'http://'+this.$store.getters.api.ip+':'+this.$store.getters.api.port+'/api',
         pieChartOptions:{
             hoverBorderWidth: 20,
             maintainAspectRatio:false,
@@ -126,6 +125,11 @@ export default {
                     precision:2,
 
                 }
+            },
+            'onClick':(point,event)=>{
+                const item = event[0]
+                var name = this.barChartData.labels[item._index]
+                this.gotoTest(name)
             }
         },
         Analytics:{},
@@ -136,16 +140,17 @@ export default {
     this.getAllResults();
   },
   methods:{
+    gotoTest(name){
+        console.log(name)
+        console.log(this.selector)
+        this.$router.push({path:'/selectors/'+this.selector.id+'/results/last?popup='+name})
+        this.$router.go(this.$router.currentRoute)
+    },
     closePopup(){
       this.$emit('closeAnalytics','thanks')
     },
     switchType(){
       this.analyzeResults=!this.analyzeResults
-      if(this.analyzeResults){
-          this.chartData.datasets[0].data=this.Analytics.dataResults
-      } else {
-          this.chartData.datasets[0].data=this.Analytics.dataResults
-      }
     },
     forceRerender(){
       this.componentKey += 1;
@@ -157,7 +162,6 @@ export default {
         SelectorAnalyzer.analyzeSelector(this.selector.id).then((data)=>{
             this.Analytics=data
             this.pieChartData.datasets[0].data=this.Analytics.dataResults
-            
             for (var t in this.Analytics.dataTests){
                 this.barChartData.labels.push(t)
                 this.barChartData.datasets[0].data.push(this.Analytics.dataTests[t][0])

@@ -95,7 +95,7 @@
       }
   },
   created(){
-      if (this.popup == this.item.test.name){
+      if (this.popup == this.item.test.name || this.popup == this.item.test.display_name){
           this.PopUpVisible=true
       }
       if(this.item.test.type=='datetime'){

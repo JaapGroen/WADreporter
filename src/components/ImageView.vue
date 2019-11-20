@@ -13,13 +13,19 @@
             <div class="overlaycontent" v-if="!multiview">
                 <img class="img_large" v-bind:src="'data:image/jpg;base64,'+item[0].test.value"/>
             </div>
-            <div class="overlaycontent" v-if="multiview">
-                <div class="thumbnails">
-                    <img v-for="thumbnail in thumbnails" class="thumbnail" v-bind:src="'data:image/jpg;base64,'+thumbnail.y"/>
+            <div class="overlaycontent" v-if="thumbs_loading">
+                <i class="fas fa-sun fa-2x fa-spin"></i>
+            </div>
+            <div class="overlaycontent" v-if="multiview && !thumbs_loading">
+                <div class="thumbnails">                
+                    <div v-for="thumbnail in thumbnails" class="thumbnailblock" @click="change_result(thumbnail.result.id, thumbnail.test.name)">
+                        <img class="thumbnail" v-bind:src="'data:image/jpg;base64,'+thumbnail.y"/>
+                        {{thumbnail.x | isodate}}
+                    </div>
                 </div>
             </div>
             <div class="overlayfooter">
-                <button v-if="!multiview" class="smbutton" @click="history">All objects</button>
+                <button v-if="!multiview" class="smbutton" @click="history">History</button>
                 <button v-if="multiview" class="smbutton" @click="current">Back</button>
             </div>
         </div>
@@ -38,6 +44,7 @@ export default {
             componentKey: 0,
             multiview:false,
             thumbnails:[],
+            thumbs_loading:false
         }
     },
   methods:{
@@ -49,6 +56,7 @@ export default {
         this.multiview=true;
     },
     loadHistory(){
+        this.thumbs_loading=true
         GraphLoader.loadGraph(
             this.$props.item[0].selector.id,
             this.$props.item[0].result.id,
@@ -56,6 +64,7 @@ export default {
             this.$props.item[0].test.type
         ).then(resp => {
             this.thumbnails = resp
+            this.thumbs_loading = false
         })
     },
     current(){
@@ -63,6 +72,10 @@ export default {
     },
     forceRerender(){
       this.componentKey += 1;
+    },
+    change_result(id,name){
+        this.$router.push({path:'/selectors/'+this.item[0].selector.id+'/results/'+id+'?popup='+name})
+        this.$router.go(this.$router.currentRoute)
     },
   },
   filters:{
@@ -94,6 +107,13 @@ export default {
     display:flex;
     flex-direction:row;
     flex-wrap:wrap;
+}
+
+.thumbnailblock{
+    display:flex;
+    flex-direction:column;
+    margin:5px;
+    cursor: pointer;
 }
 
 .thumbnail{

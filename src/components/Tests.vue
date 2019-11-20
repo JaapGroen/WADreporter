@@ -25,7 +25,7 @@ export default {
       return {
         idSelector:this.$route.params.idSelector,
         idResult:this.$route.params.idResult,
-        popup:this.$route.params.popup,
+        popup:this.$route.query.popup,
         item:{tests:[]},
         loading:true,
         apiURL:'http://'+this.$store.getters.api.ip+':'+this.$store.getters.api.port+'/api'

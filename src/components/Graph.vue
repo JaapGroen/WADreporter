@@ -101,7 +101,9 @@ export default {
             this.$refs.LineChart.resetZoom();
         },
         reloadGraph(){
-            this.$refs.LineChart.reloadGraph();
+            if (this.$refs.LineChart){
+                this.$refs.LineChart.reloadGraph();
+            }
         },
         change_selector(selectedSelector){
             this.ddSel=false;
