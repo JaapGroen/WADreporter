@@ -42,7 +42,7 @@ export default {
                 }
             }
             for (var group in this.groupObject){
-                if (this.groupObject[group].selectors.length>0){
+                if (this.groupObject[group].selectors.length>0 && group!='[hide]'){
                     this.groupArray.push(this.groupObject[group]);
                 }
             }

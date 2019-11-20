@@ -34,11 +34,11 @@ function get_options(category,ylabel){
       xAxes: [{
         type: 'time',
         distribution: 'linear',
-        gridLines: {display: false},
+        gridLines: {display: true,color:'#444444'},
         ticks:{fontColor:'white'}
      }],
       yAxes: [{
-        gridLines: {display: false},
+        gridLines: {display: true,color:'#444444'},
         ticks:{fontColor:'white'},
         scaleLabel:{display:true,labelString:ylabel}
       }]
@@ -63,7 +63,7 @@ function get_options(category,ylabel){
   };
   if (category=='datetime'){
       options.scales.yAxes[0].ticks.display=false;
-      options.scales.yAxes[0].ticks.min=-0.5
+      options.scales.yAxes[0].ticks.min=0
       options.scales.yAxes[0].ticks.max=2
   }
   return options

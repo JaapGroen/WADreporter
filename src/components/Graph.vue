@@ -168,7 +168,11 @@ export default {
                 } else {
                     temp = GraphLoader.getcolor('randomvalue')
                 }
-                this.chartOptions = GraphLoader.get_options(this.$props.items[i].test.type,this.$props.items[i].test.units)
+                var ylabel = this.$props.items[i].test.units
+                if (!ylabel){
+                    ylabel = 'Event'
+                }
+                this.chartOptions = GraphLoader.get_options(this.$props.items[i].test.type,ylabel)
                 GraphLoader.loadGraph(
                     this.$props.items[i].selector.id,
                     this.$props.items[i].result.id,
@@ -176,7 +180,7 @@ export default {
                     this.$props.items[i].test.type
                 ).then(resp => {
                     temp.data=resp
-                    temp.label=this.$props.items[i].test.name
+                    temp.label=this.$props.items[i].test.display_name+' ('+this.$props.items[i].selector.name+')'
                     this.chartData.datasets.push(temp)                    
                     if(this.$props.items.length==1){
                         GraphLoader.loadLimits(
@@ -264,7 +268,7 @@ export default {
         this.updateGraph()
     },
     components:{
-        LineChart,
+        LineChart
     },
     computed: {
         chartStyle () {

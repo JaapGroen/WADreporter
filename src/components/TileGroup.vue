@@ -1,10 +1,10 @@
 <template>
-  <div class="tilerow">
-    <div class="grouplabel"><span class="vertical-text">{{group.name}}</span></div>
-    <div class="tilegroup">
-    <SelectorTile v-for="selector in filteredSelectors" v-bind:selector="selector" :key="selector.id"></SelectorTile>
+    <div class="tilerow">
+        <div class="grouplabel"><span class="vertical-text">{{group.name}}</span></div>
+        <div class="tilegroup">
+            <SelectorTile v-for="selector in filteredSelectors" v-bind:selector="selector" :key="selector.id"></SelectorTile>
+        </div>
     </div>
-  </div>
 </template>
 
 <script>
