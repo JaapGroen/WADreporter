@@ -1,6 +1,5 @@
 import {HTTP} from '../main'
 import store from '@/store/store'
-var apiURL='http://'+store.getters.api.ip+':'+store.getters.api.port+'/api'
 
 function str2date(string){
   return new Date(Date.parse(string));
@@ -72,6 +71,7 @@ function get_options(category,ylabel){
 
 var loadGraph = (idSelector,idResult,idTest,RType) => {
     return new Promise((resolve,reject)=>{
+        var apiURL='http://'+store.getters.api.ip+':'+store.getters.api.port+'/api'
         HTTP.get(apiURL+'/selectors/'+idSelector+'/results/'+idResult+'/tests/'+idTest+'/'+RType+'/history')
         .then(resp => {
             var data=resp.data.history
@@ -94,6 +94,7 @@ var loadGraph = (idSelector,idResult,idTest,RType) => {
 
 var loadLimits = (idSelector,idResult,idTest,RType) => {
     return new Promise((resolve,reject)=>{
+        var apiURL='http://'+store.getters.api.ip+':'+store.getters.api.port+'/api'
         HTTP.get(apiURL+'/selectors/'+idSelector+'/results/'+idResult+'/tests/'+idTest+'/'+RType)
         .then(resp => {
             if(resp.data.test.limit){

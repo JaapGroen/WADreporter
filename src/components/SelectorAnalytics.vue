@@ -133,7 +133,7 @@ export default {
       }
   },
   mounted(){
-    this.getAllResults()
+    this.getAllResults();
   },
   methods:{
     closePopup(){
@@ -146,7 +146,6 @@ export default {
       } else {
           this.chartData.datasets[0].data=this.Analytics.dataResults
       }
-      //this.reloadPieChart()
     },
     forceRerender(){
       this.componentKey += 1;

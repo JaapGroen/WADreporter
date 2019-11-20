@@ -3,7 +3,7 @@
   <div class="block">
     <div class="item_title" v-bind:class="bgc_class">{{item.test.display_name || item.test.name}}</div>
     
-    <div class="item_content" v-if="item.test.type=='float'" @click="showGraph">
+    <div class="item_content" v-if="item.test.type=='float'" @click="showPopUp">
       <div class="tlimit" v-bind:style="{top:(calctop.max_limit-9)+'px'}" v-if="item.test.limit">
         {{item.test.limit[3]}}
       </div>
@@ -27,7 +27,7 @@
       </div>
     </div>
     
-    <div class="item_content" v-if="item.test.type=='string'" @click="showTable">
+    <div class="item_content" v-if="item.test.type=='string'" @click="showPopUp">
       <div class="tlimit" v-bind:style="{top:'82px'}" v-if="item.test.limit">
         {{item.test.limit}}
       </div>
@@ -35,7 +35,7 @@
       <div class="tdot" v-bind:class="c_class">{{item.test.value}}</div>
     </div>
     
-    <div class="item_content" v-if="item.test.type=='datetime'" @click="showGraph">
+    <div class="item_content" v-if="item.test.type=='datetime'" @click="showPopUp">
       <div class="tlimit" v-bind:style="{top:(calctop.today-9)+'px'}">{{today | isodate}}</div>
       <div class="tlimit" v-bind:style="{top:(calctop.limitday-9)+'px'}">{{(today-item.test.limit*24*3600*1000) | isodate}}</div>
       <div class="line bgc1" v-bind:style="{top:(calctop.today)+'px',height:(calctop.limitday)-(calctop.today)+'px'}"></div>
@@ -44,7 +44,7 @@
       <div class="tdot" v-bind:class="c_class" v-bind:style="{top:(calctop.value)-9+'px'}">{{item.test.value | isodate}}</div>
     </div>
     
-    <div class="item_content" v-if="item.test.type=='object'" @click="showImage">
+    <div class="item_content" v-if="item.test.type=='object'" @click="showPopUp">
       <img class="item_img" v-bind:src="'data:image/jpg;base64,'+item.test.value"/>
     </div>
     
@@ -59,13 +59,9 @@
 
   </div>
   <transition name="fade">
-  <graph v-if="GraphVisible" v-on:closeGraph="closeGraph" v-bind:items="[item]" :key="item.test.id"></graph>
-  </transition>
-  <transition name="fade">
-  <imageview v-if="ImageVisible" v-on:closeImage="closeImage" v-bind:item="[item]" :key="item.test.id"></imageview>
-  </transition>
-  <transition name="fade">
-  <tableview v-if="TableVisible" v-on:closeTable="closeTable" v-bind:item="[item]" :key="item.test.id"></tableview>
+    <graph v-if="PopUpVisible && (item.test.type=='datetime' || item.test.type=='float')" v-on:closePopUp="closePopUp" v-bind:items="[item]" :key="item.test.id"></graph>
+    <imageview v-if="PopUpVisible && item.test.type=='object'" v-on:closePopUp="closePopUp" v-bind:item="[item]" :key="item.test.id"></imageview>
+    <tableview v-if="PopUpVisible && item.test.type=='string'" v-on:closePopUp="closePopUp" v-bind:item="[item]" :key="item.test.id"></tableview>
   </transition>
   </div>
 </template>
@@ -78,7 +74,7 @@
  import {HTTP} from '../main'
 
  export default {
-  props: ['selector','result','test'],
+  props: ['selector','result','test','popup'],
   data(){
       return {
         componentKey: 0,
@@ -86,6 +82,7 @@
         GraphVisible:false,
         ImageVisible:false,
         TableVisible:false,
+        PopUpVisible:false,
         item:{selector:this.$props.selector,
             result:this.$props.result,
             test:this.$props.test
@@ -98,6 +95,9 @@
       }
   },
   created(){
+      if (this.popup == this.item.test.name){
+          this.PopUpVisible=true
+      }
       if(this.item.test.type=='datetime'){
           HTTP.get(this.apiURL+'/selectors/'+this.item.selector.id+'/results')
           .then(resp =>{
@@ -116,10 +116,13 @@
     forceRerender(){
       this.componentKey += 1;
     },
-    showGraph(){
-        this.GraphVisible=true;
+    closePopUp(){
+        this.PopUpVisible=false
     },
-    showImage(){
+    showPopUp(){
+        this.PopUpVisible=true;
+    },
+/*     showImage(){
         this.ImageVisible=true;
     },
     showTable(){
@@ -133,7 +136,7 @@
     },
     closeTable(){
         this.TableVisible=false;
-    },
+    }, */
     enter_footer(){
         this.hover.footer=true;
     },

@@ -1,5 +1,5 @@
 <template>
-  <router-link :to="{name:'Tests',params:{idSelector:idSelector,idResult:idResult}}" tag="div" class="block">
+  <router-link :to="{name:'Tests',params:{idSelector:idSelector,idResult:idResult,popup:'None'}}" tag="div" class="block">
     <div class="item_title" v-bind:class="testclass">{{item.selector.name}}</div>
     <div class="item_content" v-if="item.loading">
       <i class="fas fa-sun fa-2x fa-spin"></i>

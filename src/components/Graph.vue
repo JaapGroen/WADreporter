@@ -8,7 +8,7 @@
             {{item.test.display_name || item.test.name}}
           </span>
         </div>
-        <i class="fas fa-times pointer" @click="closeGraph"></i>
+        <i class="fas fa-times pointer" @click="closePopUp"></i>
       </div>
       <div class="overlaycontent">
         <line-chart ref="LineChart" v-if="loaded" :chartdata="chartData" :options="chartOptions" :styles="chartStyle"/>
@@ -70,12 +70,11 @@ export default {
             ddSel:false,
             ddTest:false,
             ddItems:false,
-            apiURL:'http://'+this.$store.getters.api.ip+':'+this.$store.getters.api.port+'/api'
         }
     },
     methods:{
-        closeGraph(){
-            this.$emit('closeGraph','thanks')
+        closePopUp(){
+            this.$emit('closePopUp','thanks')
         },
         forceRerender(){
             this.componentKey += 1;
@@ -273,6 +272,9 @@ export default {
                 position: 'relative'
             }
         },
+        apiURL(){
+            return 'http://'+this.$store.getters.api.ip+':'+this.$store.getters.api.port+'/api'
+        }
     }
 }
 

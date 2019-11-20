@@ -8,7 +8,7 @@
                 <div v-if="multiview">
                     All {{thumbnails.length}} objects
                 </div>
-                <i class="fas fa-times pointer" @click="closeImage"></i>
+                <i class="fas fa-times pointer" @click="closePopUp"></i>
             </div>
             <div class="overlaycontent" v-if="!multiview">
                 <img class="img_large" v-bind:src="'data:image/jpg;base64,'+item[0].test.value"/>
@@ -41,8 +41,8 @@ export default {
         }
     },
   methods:{
-    closeImage(){
-      this.$emit('closeImage','thanks')
+    closePopUp(){
+      this.$emit('closePopUp','thanks')
     },
     history(){
         this.loadHistory();

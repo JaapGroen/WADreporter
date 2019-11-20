@@ -3,7 +3,7 @@
     <div class="overlaybox">
       <div class="overlaytop">
         {{item[0].test.display_name || item[0].test.name}}
-        <i class="fas fa-times pointer" @click="closeTable"></i>
+        <i class="fas fa-times pointer" @click="closePopUp"></i>
       </div>
       <div class="tablehead"> 
         <div class="tableheader">Date</div>
@@ -40,8 +40,8 @@ export default {
       }
   },
   methods:{
-    closeTable(){
-      this.$emit('closeTable','thanks')
+    closePopUp(){
+      this.$emit('closePopUp','thanks')
     },
     forceRerender(){
       this.componentKey += 1;

@@ -10,7 +10,7 @@ export default {
     },
     options: {
       type: Object,
-      default: null,
+      default: null
     }
   },
   mounted () {
