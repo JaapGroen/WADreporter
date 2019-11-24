@@ -158,6 +158,10 @@ export default {
             this.$props.items.push(this.selected_test)
             this.updateGraph()
         },
+        gotoTest(idSelector,idResult){
+            this.$router.push({path:'/selectors/'+idSelector+'/results/'+idResult})
+            this.$router.go(this.$router.currentRoute)
+        },
         updateGraph(){
             this.loaded=false;
             this.chartData.datasets=[]
@@ -173,6 +177,12 @@ export default {
                     ylabel = 'Event'
                 }
                 this.chartOptions = GraphLoader.get_options(this.$props.items[i].test.type,ylabel)
+                this.chartOptions.onClick=(event,chart)=>{
+                    const item = chart[chart.length - 1]
+                    var idSelector = this.chartData.datasets[item._datasetIndex].data[item._index].selector.id
+                    var idResult = this.chartData.datasets[item._datasetIndex].data[item._index].result.id
+                    this.gotoTest(idSelector,idResult)
+                }              
                 GraphLoader.loadGraph(
                     this.$props.items[i].selector.id,
                     this.$props.items[i].result.id,

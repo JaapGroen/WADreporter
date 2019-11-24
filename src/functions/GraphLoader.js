@@ -60,6 +60,7 @@ function get_options(category,ylabel){
       display:true,
       position: 'top'
     },
+
   };
   if (category=='datetime'){
       options.scales.yAxes[0].ticks.display=false;
@@ -83,6 +84,7 @@ var loadGraph = (idSelector,idResult,idTest,RType) => {
                 if(RType=='datetime'){
                     dat.y=1
                 }
+                dat.selector={id:idSelector}
             })
             resolve(data)
         })
