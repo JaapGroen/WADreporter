@@ -83,7 +83,7 @@ export default {
         let d = new Date(timestamp);
         return d.getDate()+'-'+(d.getMonth()+1)+'-'+d.getFullYear()
     },
-  }
+  },
 }
 
 </script>

@@ -1,10 +1,10 @@
 <template>
-  <div class="tablerow">
-    <div class="tablecell">{{test.x | isodate}}</div>
-    <div class="tablecell" v-bind:class="c_class">{{test.y}}</div>
-    <div class="tablecell" v-if="!!test.limit">{{test.limit}}</div>
-    <div class="tablecell" v-if="!test.limit">-</div>
-  </div>
+    <div class="tablerow" @click=gotoTest(test.selector.id,test.result.id) v-bind:style="highlight" @mouseover="hover = true" @mouseleave="hover = false">
+        <div class="tablecell">{{test.x | isodate}}</div>
+        <div class="tablecell" v-bind:class="c_class">{{test.y}}</div>
+        <div class="tablecell" v-if="!!test.limit">{{test.limit}}</div>
+        <div class="tablecell" v-if="!test.limit">-</div>
+    </div>
 </template>
 
 <script>
@@ -19,11 +19,16 @@ export default {
         loaded:false,
         item:'',
         componentKey: 0,
+        hover:false,
       }
   },
   methods:{
     forceRerender(){
       this.componentKey += 1;
+    },
+    gotoTest(idSelector,idResult){
+        this.$router.push({path:'/selectors/'+idSelector+'/results/'+idResult})
+        this.$router.go(this.$router.currentRoute)
     },
   },
   filters:{
@@ -45,6 +50,11 @@ export default {
         }
       }
     },
+    highlight: function(){
+        if (this.hover){
+            return 'background-color:#444444;'
+        }
+    }
   }
 }
 
@@ -56,6 +66,7 @@ export default {
   flex-direction:row;
   width:100%;
   justify-content:space-around;
+  cursor:pointer;
 }
 
 .tablerow:nth-child(even){
@@ -63,12 +74,14 @@ export default {
 }
 
 .tablerow:nth-child(odd){
-    background:#2F2F2F;
+    background-color:#2F2F2F;
 }
 
 .tablecell{
     width:33%;
     padding-left:10px;
 }
+
+
 
 </style>
