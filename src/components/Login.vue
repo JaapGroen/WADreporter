@@ -38,10 +38,14 @@
         msg:"",
         showAPI:false,
         api:{ip:this.$store.getters.api.ip,port:this.$store.getters.api.port},
-        apiURL:'http://'+this.$store.getters.api.ip+':'+this.$store.getters.api.port+'/api'
       }
     },
-	methods: {
+    computed:{
+        apiURL(){
+            return 'http://'+this.$store.getters.api.ip+':'+this.$store.getters.api.port+'/api'
+        }
+    },
+    methods: {
       login(){
           HTTP.post(this.apiURL+'/authenticate', this.credentials).then(resp => {
               if(resp.data.success){

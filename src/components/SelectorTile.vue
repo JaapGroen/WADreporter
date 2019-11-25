@@ -26,9 +26,13 @@ import {HTTP} from '../main'
         componentKey: 0,
         idSelector:this.$props.selector.id,
         idResult:0,
-        apiURL:'http://'+this.$store.getters.api.ip+':'+this.$store.getters.api.port+'/api',
       }
   },
+    computed:{
+        apiURL(){
+            return 'http://'+this.$store.getters.api.ip+':'+this.$store.getters.api.port+'/api'
+        }
+    },
   created(){
     HTTP.get(this.apiURL+'/selectors/'+this.$props.selector.id+'/results/last')
     .then(resp => {

@@ -91,7 +91,6 @@
         allresults:[],
         hover:{footer:false,title:false},
         selected_result:'',
-        apiURL:'http://'+this.$store.getters.api.ip+':'+this.$store.getters.api.port+'/api'
       }
   },
   created(){
@@ -154,6 +153,9 @@
     },
     c_class: function(){
       return 'c'+this.test.status
+    },
+    apiURL(){
+        return 'http://'+this.$store.getters.api.ip+':'+this.$store.getters.api.port+'/api'
     },
     calctop:function(){
         var item = this.test;
