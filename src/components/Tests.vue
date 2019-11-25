@@ -28,7 +28,6 @@ export default {
         popup:this.$route.query.popup,
         item:{tests:[]},
         loading:true,
-        apiURL:'http://'+this.$store.getters.api.ip+':'+this.$store.getters.api.port+'/api'
       }
     },
     mounted(){
@@ -53,6 +52,9 @@ export default {
                 function (item) { return item.display_name; }
             ],["desc","asc"])
             return tests
+        },
+        apiURL(){
+            return 'http://'+this.$store.getters.api.ip+':'+this.$store.getters.api.port+'/api'
         }
     },   
     components: {
