@@ -37,35 +37,34 @@
         credentials:{username : "",password : ""},
         msg:"",
         showAPI:false,
-        api:{ip:this.$store.getters.api.ip,port:this.$store.getters.api.port},
       }
     },
     computed:{
         apiURL(){
             return 'http://'+this.$store.getters.api.ip+':'+this.$store.getters.api.port+'/api'
+        },
+        api(){
+            return this.$store.getters.api
         }
     },
     methods: {
-      login(){
-          HTTP.post(this.apiURL+'/authenticate', this.credentials).then(resp => {
-              if(resp.data.success){
-                  const token = resp.data.token
-                  localStorage.setItem('WADtoken', token)
-                  const user = resp.data.user
-                  localStorage.setItem('WADuser', JSON.stringify(user))
-                  this.$store.commit('auth_success',{token:token,user:user})
-                  HTTP.defaults.headers['Authorization'] = 'JWT '+token
-                  this.$router.push('/selectors')
+      login: function(){
+          this.$store.dispatch('login',{apiURL:this.apiURL,credentials:this.credentials})
+          .then((resp)=>{
+              if (resp.data.success){
+                  this.$router.push('/selectors').catch(()=>{})
               } else {
-                  this.msg=resp.data.msg
+                  this.msg = resp.data.msg
               }
           })
       },
       setAPI(){
-          this.$store.commit('setAPI',this.api)
-          this.apiURL='http://'+this.$store.getters.api.ip+':'+this.$store.getters.api.port+'/api'
-          this.showAPI=false;
-          this.msg="API information saved."
+          this.$store.dispatch('setAPI',this.api).then((resp)=>{
+              if (resp){
+                  this.showAPI=false;
+                  this.msg="API information saved."
+              }
+          })
       },
       toggleView(){
         this.showAPI=!this.showAPI;

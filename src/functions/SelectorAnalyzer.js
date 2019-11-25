@@ -1,8 +1,8 @@
 import {HTTP} from '../main'
 import store from '@/store/store'
-var apiURL='http://'+store.getters.api.ip+':'+store.getters.api.port+'/api'
 
 var analyzeSelector = (id)=>{
+    var apiURL='http://'+store.getters.api.ip+':'+store.getters.api.port+'/api'
     return new Promise((resolve,reject)=>{
         var Analytics={}
         Analytics.dataResults=[0,0,0]
@@ -42,11 +42,11 @@ var analyzeSelector = (id)=>{
                     }
                 }
                 resolve(Analytics)
-            })  
+            })
         })
     })
 }
-    
+
 export default{
     analyzeSelector
 } 

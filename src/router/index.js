@@ -11,41 +11,68 @@ let router = new Router({
   mode: 'history',
   routes: [
     {
-      path: '/',
+      path: '/login',
       name: 'Login',
-      component: Login
+      component: Login,
+      meta: {
+        guest: true
+      }
     },
     {
       path: '/selectors',
       name: 'Selectors',
-      component: Selectors,    
+      component: Selectors,
+      meta: {
+        requiresAuth: true
+      }
     },
     {
       path: '/selectors/:idSelector/results/:idResult',
       name: 'Tests',
-      component: Tests,    
-    },    
+      component: Tests,
+      meta: {
+        requiresAuth: true
+      }
+    },
   ]
 })
 
-var checked=false;
+//var checked=false;
 
 router.beforeEach((to, from, next) => {
-  if(to.path=='/'){
-    if(store.getters.isLoggedIn){
-      next('/selectors')
+    if (to.matched.some(record => record.meta.requiresAuth)){
+        if (localStorage.getItem('WADtoken') == null) {
+            next('/login')
+        } else {
+            next()
+        }
+    } else if (to.matched.some(record => record.meta.guest)){
+        if(localStorage.getItem('WADtoken') == null){
+            next()
+        } else {
+            next('/selectors')
+        }
+    } else {
+        next('/login')
     }
-    next()
-  }
-  if(to.matched.some(record => record.meta.requiresAuth)) {
-    if (store.getters.isLoggedIn) {
-      next()
-      return
-    }
-    next('/') 
-  } else {
-    next() 
-  }
 })
+
+//router.beforeEach((to, from, next) => {
+//  if(to.path=='/'){
+//    if(store.getters.isLoggedIn){
+//      next('/selectors')
+//    }
+//    next()
+//  }
+//  if(to.matched.some(record => record.meta.requiresAuth)) {
+//    if (store.getters.isLoggedIn) {
+//      next()
+//      return
+//    }
+//    next('/')
+//  } else {
+//    next()
+//  }
+//})
 
 export default router

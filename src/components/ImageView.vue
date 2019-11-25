@@ -74,8 +74,7 @@ export default {
       this.componentKey += 1;
     },
     change_result(id,name){
-        this.$router.push({path:'/selectors/'+this.item[0].selector.id+'/results/'+id+'?popup='+name})
-        this.$router.go(this.$router.currentRoute)
+        this.$router.push({name:'Tests',params:{idSelector:this.item[0].selector.id,idResult:id},query:{popup:name}})
     },
   },
   filters:{

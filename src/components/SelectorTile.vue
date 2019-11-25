@@ -28,11 +28,6 @@ import {HTTP} from '../main'
         idResult:0,
       }
   },
-    computed:{
-        apiURL(){
-            return 'http://'+this.$store.getters.api.ip+':'+this.$store.getters.api.port+'/api'
-        }
-    },
   created(){
     HTTP.get(this.apiURL+'/selectors/'+this.$props.selector.id+'/results/last')
     .then(resp => {
@@ -72,6 +67,9 @@ import {HTTP} from '../main'
         return ''
       }
     },
+    apiURL(){
+        return 'http://'+this.$store.getters.api.ip+':'+this.$store.getters.api.port+'/api'
+    }
   },
   filters:{
     prettydate: timestamp =>{

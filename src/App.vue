@@ -5,7 +5,7 @@
         integrity="sha384-hWVjflwFxL6sNzntih27bfxkr27PmbbK/iSvJ+a4+0owXq79v+lsFkW54bOGbiDQ" 
         crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css?family=Roboto" rel="stylesheet">
-    <router-view></router-view>
+    <router-view :key="$route.fullPath"></router-view>
   </div>
 </template>
 
@@ -29,7 +29,7 @@
           if ((err.response.status === 401 || err.response.status === 422) && err.config && !err.config.__isRetryRequest) {
             store.dispatch('logout')
             .then(() => {
-              router.push('/')
+              router.push('/login')
             })
           }
           throw err;

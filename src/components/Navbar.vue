@@ -52,7 +52,7 @@ export default {
       logout: function () {
         this.$store.dispatch('logout')
         .then(() => {
-          this.$router.push('/')
+          this.$router.push('/login')
         })
       },
       toggleFilter(){
@@ -105,7 +105,6 @@ export default {
   border-bottom:2px solid #FFFFFF;
   position:fixed;
   width:100%;
-  z-index:10;
 }
 
 h1 span{

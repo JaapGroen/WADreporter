@@ -159,8 +159,7 @@ export default {
             this.updateGraph()
         },
         gotoTest(idSelector,idResult){
-            this.$router.push({path:'/selectors/'+idSelector+'/results/'+idResult})
-            this.$router.go(this.$router.currentRoute)
+            this.$router.push({name:'Tests',params:{idSelector:idSelector,idResult:idResult}})
         },
         updateGraph(){
             this.loaded=false;

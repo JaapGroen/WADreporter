@@ -143,8 +143,7 @@
         this.hover.footer=false;
     },
     change_result(){
-        this.$router.push({path:'/selectors/'+this.item.selector.id+'/results/'+this.selected_result.id})
-        this.$router.go(this.$router.currentRoute)
+        this.$router.push({name:'Tests',params:{idSelector:this.item.selector.id,idResult:this.selected_result.id}})
     },
   },
   computed:{

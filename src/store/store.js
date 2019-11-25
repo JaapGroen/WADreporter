@@ -4,6 +4,8 @@ import {HTTP} from '@/main'
 
 Vue.use(Vuex)
 
+console.log('loading store...')
+
 export default new Vuex.Store({
   state: {
     token: localStorage.getItem('WADtoken') || '',
@@ -17,7 +19,6 @@ export default new Vuex.Store({
         state.user = data.user
       },
       logout(state){
-        state.status = ''
         state.token = ''
         state.user= ''
       },
@@ -25,25 +26,37 @@ export default new Vuex.Store({
         state.selectorFilter=selectorFilter.toLowerCase()
       },
       setAPI(state,api){
-          state.api=api
-      },      
+          state.api.ip = api.ip
+          state.api.port = api.port
+      },
   },
   actions: {
-    login({commit}, user){
+    setAPI({commit}, payload){
         return new Promise((resolve, reject) => {
-          commit('auth_request')
-          HTTP({url: '/authenticate', data: user, method: 'POST' })
+            commit('setAPI', {ip:payload.ip, port:payload.port})
+            resolve(true)
+        })
+    },
+    login({commit}, payload){
+        let apiURL = payload.apiURL
+        let credentials = payload.credentials
+        return new Promise((resolve, reject) => {
+          HTTP({url: apiURL+'/authenticate', data: credentials, method: 'POST' })
           .then(resp => {
-            const token = resp.data.token
-            const user = resp.data.user
-            localStorage.setItem('WADtoken', token)
-            localStorage.setItem('WADuser', user)
-            HTTP.defaults.headers['Authorization'] = 'JWT '+token
-            commit('auth_success', {token:token, user:user})
-            resolve(resp)
+            if (resp.data.success){
+                const token = resp.data.token
+                const user = resp.data.user
+                localStorage.setItem('WADtoken', token)
+                localStorage.setItem('WADuser', JSON.stringify(user))
+                HTTP.defaults.headers['Authorization'] = 'JWT '+token
+                commit('auth_success', {token:token, user:user})
+                resolve(resp)
+            } else {
+                resolve(resp)
+            }
           })
           .catch(err => {
-            commit('auth_error')
+            commit('logout')
             localStorage.removeItem('WADtoken')
             localStorage.removeItem('WADuser')
             reject(err)

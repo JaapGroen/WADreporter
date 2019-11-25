@@ -141,10 +141,7 @@ export default {
   },
   methods:{
     gotoTest(name){
-        console.log(name)
-        console.log(this.selector)
-        this.$router.push({path:'/selectors/'+this.selector.id+'/results/last?popup='+name})
-        this.$router.go(this.$router.currentRoute)
+        this.$router.push({name:'Tests',params:{idSelector:this.selector.id,idResult:'last'},query:{popup:name}})
     },
     closePopup(){
       this.$emit('closeAnalytics','thanks')
