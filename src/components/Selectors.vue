@@ -18,9 +18,13 @@ export default {
             selectors:this.$store.getters.selectors,
             groupObject:{'[no group]':{name:'[no group]',selectors:[]}},
             loaded:false,
-            apiURL:'http://'+this.$store.getters.api.ip+':'+this.$store.getters.api.port+'/api',
             groupArray:[],
             selector:{name:'selectors',id:0}
+        }
+    },
+    computed:{
+        apiURL(){
+            return 'http://'+this.$store.getters.api.ip+':'+this.$store.getters.api.port+'/api'
         }
     },
     mounted(){
