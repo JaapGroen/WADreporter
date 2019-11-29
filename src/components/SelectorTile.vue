@@ -1,12 +1,18 @@
 <template>
   <router-link :to="{name:'Tests',params:{idSelector:idSelector,idResult:idResult}}" tag="div" class="block">
-    <div class="item_title" v-bind:class="testclass">{{item.selector.name}}</div>
+    <div class="item_title" v-bind:class="testclass">
+      {{item.selector.name}}
+    </div>
     <div class="item_content" v-if="item.loading">
       <i class="fas fa-sun fa-2x fa-spin"></i>
     </div>
     <div class="item_content" v-if="!item.loading">{{item.selector.description}}</div>
     <div class="item_footer" v-bind:class="dateclass">
+      <div>
+      <i v-if="item.result.status.datetime==1" class="fas fa-check-circle c1"></i>
+      <i v-if="item.result.status.datetime==3" class="fas fa-times-circle c3"></i>
       {{item.result.date | prettydate}}
+      </div>
     </div>
   </router-link>
 </template>
