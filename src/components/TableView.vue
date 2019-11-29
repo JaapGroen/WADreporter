@@ -115,7 +115,7 @@ export default {
   flex-direction:row;
   width:100%;
   justify-content:space-around;
-  background:#444444;
+  background:#323b47;
 }
 
 .tableheader{
@@ -125,10 +125,10 @@ export default {
 
 .textbox{
   border:none;
-  background-color:#444444;
+  background-color:#323b47;
   width:100%;
   height:30px;
-  border-bottom:3px solid #0FAAEA;
+  border-bottom:3px solid #3c6eb9;
   color:white;
   font-family: 'Roboto', sans-serif;
   border-radius: 5px;

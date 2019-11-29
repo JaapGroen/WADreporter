@@ -52,7 +52,7 @@ export default {
     },
     highlight: function(){
         if (this.hover){
-            return 'background-color:#444444;'
+            return 'background-color:#acb3bf;'
         }
     }
   }
@@ -70,11 +70,11 @@ export default {
 }
 
 .tablerow:nth-child(even){
-    background-color: #0C0C0C;
+    background-color: #141a26;
 }
 
 .tablerow:nth-child(odd){
-    background-color:#2F2F2F;
+    background-color: #0c111b;
 }
 
 .tablecell{

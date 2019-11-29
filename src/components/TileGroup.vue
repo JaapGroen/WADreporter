@@ -50,7 +50,7 @@
   flex-direction:column;        /* added for add report... */
   align-items:center;
   justify-content:space-around;
-  background:#2F2F2F;
+  background:#323b47;
   height:250px;
   width:50px;
   border-radius:25px;

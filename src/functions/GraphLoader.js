@@ -7,13 +7,13 @@ function str2date(string){
 
 function getcolor(category){
   if (category=='limitdanger'){
-    var linecolor = {borderColor:'#EE1947',backgroundColor: "rgba(0,0,0,0.0)",pointRadius:0,borderWidth:3,lineTension:0}
+    var linecolor = {borderColor:'#d8513f',backgroundColor: "rgba(0,0,0,0.0)",pointRadius:0,borderWidth:3,lineTension:0}
   } else if (category=='limitwarning'){
-    var linecolor = {borderColor:'#FF8820',backgroundColor: "rgba(0,0,0,0.0)",pointRadius:0,borderWidth:3,lineTension:0}
+    var linecolor = {borderColor:'#eab63e',backgroundColor: "rgba(0,0,0,0.0)",pointRadius:0,borderWidth:3,lineTension:0}
   } else if (category=='value'){
-    var linecolor = {borderColor:'#0FAAEA',backgroundColor: "rgba(0,0,0,0.0)",pointRadius:5,lineTension:0,pointHitRadius:10,borderWidth:3,showLine:true}
+    var linecolor = {borderColor:'#3c6eb9',backgroundColor: "rgba(0,0,0,0.0)",pointRadius:5,lineTension:0,pointHitRadius:10,borderWidth:3,showLine:true}
   } else if (category=='datevalue'){
-    var linecolor = {borderColor:'#0FAAEA',backgroundColor: "rgba(0,0,0,0.0)",pointRadius:0,borderWidth:3,showLine:true,lineTension:0}
+    var linecolor = {borderColor:'#3c6eb9',backgroundColor: "rgba(0,0,0,0.0)",pointRadius:0,borderWidth:3,showLine:true,lineTension:0}
   } else if (category=='randomvalue'){
     var letters = '0123456789ABCDEF';
     var color = '#';
@@ -34,11 +34,11 @@ function get_options(category,ylabel){
       xAxes: [{
         type: 'time',
         distribution: 'linear',
-        gridLines: {display: true,color:'#444444'},
+        gridLines: {display: true,color:'#323b47'},
         ticks:{fontColor:'white'}
      }],
       yAxes: [{
-        gridLines: {display: true,color:'#444444'},
+        gridLines: {display: true,color:'#323b47'},
         ticks:{fontColor:'white'},
         scaleLabel:{display:true,labelString:ylabel}
       }]
