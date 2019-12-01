@@ -31,8 +31,8 @@
         
       </div>
       <div class="overlayfooter">
-        <button class="smbutton" @click="switchType" v-if="analyzeResults"><i class="fas fa-exchange-alt"></i> Tests</button>
-        <button class="smbutton" @click="switchType" v-if="!analyzeResults"><i class="fas fa-exchange-alt"></i> Results</button>
+        <button class="btn btn-small" @click="switchType" v-if="analyzeResults"><i class="fas fa-exchange-alt"></i> Tests</button>
+        <button class="btn btn-small" @click="switchType" v-if="!analyzeResults"><i class="fas fa-exchange-alt"></i> Results</button>
       </div>
     </div>
   </div>
@@ -74,7 +74,7 @@ export default {
           datasets:[
             {
               label: "Results",
-              backgroundColor: ["#75EB27","#FF8820","#EE1947"],
+              backgroundColor: ["#58a55c","#eab63e","#d8513f"],
               data:[]
             }
           ]
@@ -83,15 +83,15 @@ export default {
             labels:[],
             datasets:[{
                 label:'OK',
-                backgroundColor:"#75EB27",
+                backgroundColor:"#58a55c",
                 data:[]
             },{
                 label:'warning',
-                backgroundColor:"#FF8820",
+                backgroundColor:"#eab63e",
                 data:[]
             },{
                 label:'danger',
-                backgroundColor:"#EE1947",
+                backgroundColor:"#d8513f",
                 data:[]
             }]
         },
@@ -186,23 +186,6 @@ export default {
 </script>
 
 <style>
-.overlaycontentsub-v{
-  display:flex;
-  flex-direction:column;
-  align-items:center;
-  justify-content:space-around;
-  height:100%;
-  width:50%;
-}
 
-.overlaycontentsub-h{
-  display:flex;
-  flex-direction:row;
-  align-items:center;
-  justify-content:space-around;
-  height:50%;
-  min-height:250px;
-  width:100%;
-}
 
 </style>

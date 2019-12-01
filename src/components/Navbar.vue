@@ -3,23 +3,23 @@
         <div class="header" v-if="isLoggedIn && selector">
             <router-link to="/selectors" tag="h1" class="pointer">WADreporter <span>/ {{selector.name}}</span></router-link>
             <div class="menu" @mouseover="MenuVisible=true" @mouseleave="MenuVisible=false">
-                <button class="button menuitem"  v-if="MenuVisible" @click="reloadSelectors">
+                <button class="btn btn-large menuitem"  v-if="MenuVisible" @click="reloadSelectors">
                     <i class="fas fa-sync"></i>
                     Reload
                 </button>
-                <button class="button menuitem" @click="logout"  v-if="MenuVisible">
+                <button class="btn btn-large menuitem" @click="logout"  v-if="MenuVisible">
                     <i class="fas fa-sign-out-alt"></i>
                     Logout
                 </button>
-                <button class="button menuitem" @click="openAnalytics" v-if="MenuVisible && selector.id>0">
+                <button class="btn btn-large menuitem" @click="openAnalytics" v-if="MenuVisible && selector.id>0">
                     <i class="fas fa-info-circle"></i>
                     Analytics
                     </button>
-                <button class="button menuitem inputWithIcon" v-if="MenuVisible || selectorFilter.length>0">
+                <button class="btn btn-large menuitem inputWithIcon" v-if="MenuVisible || selectorFilter.length>0">
                     <input style="height:23px;" type="text" class="textbox" v-model="selectorFilter" @input="changeselectorFilter"/>
                     <i class="fas fa-times" @click="clearFilter"></i>
                 </button>
-                <button class="button menuitem">
+                <button class="btn btn-large menuitem">
                     <i class="fas fa-caret-left" v-if="!MenuVisible"></i>
                     <i class="fas fa-caret-right" v-if="MenuVisible"></i>
                     <i class="fas fa-user"></i>
@@ -94,58 +94,5 @@ export default {
 </script>
 
 <style>
-.header{
-  display:flex;
-  flex-direction:row;
-  height:100px;
-  align-items:center;
-  box-sizing: border-box;
-  padding:20px;
-  justify-content:space-between;
-  border-bottom:2px solid #FFFFFF;
-  position:fixed;
-  width:100%;
-}
 
-h1 span{
-    font-size:16px;
-}
-
-.textbox{
-  border:none;
-  background-color:#444444;
-  width:200px;
-  height:30px;
-  border-bottom:3px solid #0FAAEA;
-  color:white;
-  font-family: 'Roboto', sans-serif;
-  border-radius: 5px;
-}
-
-.menuitem{
-  display:flex;
-  flex-direction:row;
-  margin:2px;
-  align-items:center;
-}
-
-.menuitem i{
-  padding-right:5px;
-}
-
-.menu{
-  display:flex;
-  flex-direction:row;
-}
-
-.inputWithIcon{
-    position: relative;
-}
-
-.inputWithIcon i {
-  position: absolute;
-  right: 0;
-  padding-right: 10px;
-  color:#FFFFFF;
-}
 </style>

@@ -17,7 +17,7 @@
         <i v-if="!loaded" class="fas fa-sun fa-2x fa-spin"></i>
       </div>
       <div class="overlayfooter">
-        <button @click="csvExport()" class="smbutton" v-if="loaded"><i class="fas fa-download"></i> Export</button>
+        <button @click="csvExport()" class="btn btn-small" v-if="loaded"><i class="fas fa-download"></i> Export</button>
       </div>
     </div>
   </div>
@@ -101,36 +101,5 @@ export default {
 </script>
 
 <style>
-.overlaybox{
-  display:flex;
-  flex-direction:column;
-  height:70%;
-  width:70%;
-  box-sizing: border-box;
-  align-items:center;
-  justify-content:center;
-}
-.tablehead{
-  display:flex;
-  flex-direction:row;
-  width:100%;
-  justify-content:space-around;
-  background:#323b47;
-}
 
-.tableheader{
-  width:33%;
-  padding-left:10px;
-}
-
-.textbox{
-  border:none;
-  background-color:#323b47;
-  width:100%;
-  height:30px;
-  border-bottom:3px solid #3c6eb9;
-  color:white;
-  font-family: 'Roboto', sans-serif;
-  border-radius: 5px;
-}
 </style>

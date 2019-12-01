@@ -5,7 +5,7 @@
         <div>
           <span v-for="(item,index) in items">
             <span v-if="index!=0">vs</span>
-            {{item.test.display_name || item.test.name}}
+            {{item.test.display_name || item.test.name}} ({{item.selector.name}})
           </span>
         </div>
         <i class="fas fa-times pointer" @click="closePopUp"></i>
@@ -16,9 +16,9 @@
       </div>
       <div class="overlayfooter">
         <div>
-          <button @click="csvExport()" class="smbutton" v-if="loaded"><i class="fas fa-download"></i> Export</button>
-          <button @click="resetZoom()" class="smbutton" v-if="loaded"><i class="fas fa-search-minus"></i> Reset</button>
-          <button @click="updateGraph()" class="smbutton" v-if="loaded"><i class="fas fa-sync"></i> Reload</button>
+          <button @click="csvExport()" class="btn btn-small" v-if="loaded"><i class="fas fa-download"></i> Export</button>
+          <button @click="resetZoom()" class="btn btn-small" v-if="loaded"><i class="fas fa-search-minus"></i> Reset</button>
+          <button @click="updateGraph()" class="btn btn-small" v-if="loaded"><i class="fas fa-sync"></i> Reload</button>
         </div>
         <div>
           <span v-if="selected_selector.name!='Choose a selector'">{{selected_selector.name}} | </span>
@@ -29,13 +29,13 @@
             <option v-for="item in alltests" v-bind:value="item">{{item.test.display_name || item.test.name}}</option>
           </select>
           <select v-if="ddItems" class="date_select" @change="change_item(selected_item)" v-model="selected_item">
-            <option v-for="item in items" v-bind:value="item">{{item.selector.name}} | {{item.test.display_name || item.test.name}}</option>
+            <option v-for="item in items" v-bind:value="item">{{item.test.display_name || item.test.name}} ({{item.selector.name}})</option>
           </select>
-          <button @click="showAdd" class="smbutton" v-if="btnAdd"><i class="fas fa-plus-square"></i> Add</button>
-          <button @click="showRemove" class="smbutton" v-if="(items.length>1) && btnRemove"><i class="fas fa-minus-square"></i> Remove</button>
-          <button @click="addResult" class="smbutton" v-if="btnGo"><i class="fas fa-plus-square"></i> Add test</button>
-          <button @click="doRemove" class="smbutton" v-if="btnGo2"><i class="fas fa-minus-square"></i> Remove test</button>
-          <button @click="cancelAdd" class="smbutton" v-if="btnCancel"><i class="fas fa-undo"></i> Cancel</button>
+          <button @click="showAdd" class="btn btn-small" v-if="btnAdd"><i class="fas fa-plus-square"></i> Add</button>
+          <button @click="showRemove" class="btn btn-small" v-if="(items.length>1) && btnRemove"><i class="fas fa-minus-square"></i> Remove</button>
+          <button @click="addResult" class="btn btn-small" v-if="btnGo"><i class="fas fa-plus-square"></i> Add test</button>
+          <button @click="doRemove" class="btn btn-small" v-if="btnGo2"><i class="fas fa-minus-square"></i> Remove test</button>
+          <button @click="cancelAdd" class="btn btn-small" v-if="btnCancel"><i class="fas fa-undo"></i> Cancel</button>
         </div>
       </div>
     </div>
@@ -137,7 +137,7 @@ export default {
             this.btnAdd=false;
             this.btnRemove=false;
             this.btnCancel=true;
-            this.$props.items.unshift({selector:{name:'Choose a selector'},test:{display_name:'test'}})
+            this.$props.items.unshift({selector:{name:'selector'},test:{display_name:'Select a test'}})
             this.selected_item=this.$props.items[0]
         },
         doRemove(){

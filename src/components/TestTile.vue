@@ -244,60 +244,6 @@
 </script>
 
 <style>
-.dot{
-  position:absolute;
-  width:14px;
-  height:14px;
-  border-radius:50%;
-  z-index: 50;
-}
 
-.tdot{
-  position:absolute;
-  right:150px;
-  padding-left:15px;
-  word-break: break-word;
-}
-
-.tlimit{
-  position:absolute;
-  left:150px;
-}
-
-.line{
-  position:absolute;
-  width:5px;
-}
-
-.item_img{
-  width:160px;
-  height:160px;
-}
-
-.date_select{
-    background:#323b47;
-    border:none;
-    color:white;
-}
-
-.fa-rotate-45 {
-    -webkit-transform: rotate(45deg);
-    -moz-transform: rotate(45deg);
-    -ms-transform: rotate(45deg);
-    -o-transform: rotate(45deg);
-    transform: rotate(45deg);
-}
-
-.fade-enter-active, .fade-leave-active{
-    transition: opacity 0.25s ease-out;
-}
-
-.fade-enter, .fade-leave-to{
-    opacity: 0;
-}
-
-.first_item{
-    order:1;
-}
 
 </style>

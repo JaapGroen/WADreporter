@@ -25,8 +25,8 @@
                 </div>
             </div>
             <div class="overlayfooter">
-                <button v-if="!multiview" class="smbutton" @click="history">History</button>
-                <button v-if="multiview" class="smbutton" @click="current">Back</button>
+                <button v-if="!multiview" class="btn btn-small" @click="history">History</button>
+                <button v-if="multiview" class="btn btn-small" @click="current">Back</button>
             </div>
         </div>
     </div>
@@ -88,34 +88,5 @@ export default {
 </script>
 
 <style>
-.overlaybox{
-  display:flex;
-  flex-direction:column;
-  height:70%;
-  width:70%;
-  box-sizing: border-box;
-  align-items:center;
-  justify-content:center;
-}
 
-.img_large{
-  height:100%;
-}
-
-.thumbnails{
-    display:flex;
-    flex-direction:row;
-    flex-wrap:wrap;
-}
-
-.thumbnailblock{
-    display:flex;
-    flex-direction:column;
-    margin:5px;
-    cursor: pointer;
-}
-
-.thumbnail{
-    height:100px;
-}
 </style>

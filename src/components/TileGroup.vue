@@ -32,33 +32,5 @@
 </script>
 
 <style>
-.tilerow{
-  display:flex;
-  flex-direction:row;
-  flex-wrap:no-wrap;
-  width:100%;
-}
 
-.tilegroup{
-  display:flex;
-  flex-direction:row;
-  flex-wrap:wrap;
-}
-
-.grouplabel{
-  display:flex;
-  flex-direction:column;        /* added for add report... */
-  align-items:center;
-  justify-content:space-around;
-  background:#323b47;
-  height:250px;
-  width:50px;
-  border-radius:25px;
-  margin:20px;
-}
-
-.vertical-text{
-  transform: rotate(270deg);
-  white-space: nowrap;
-}
 </style>
