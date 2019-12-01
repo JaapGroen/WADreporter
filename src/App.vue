@@ -225,6 +225,10 @@ body{
     cursor: pointer;
 }
 
+.thumbnailblock:hover {
+    background-color:lightblue;
+}
+
 .thumbnail{
     height:100px;
 }

@@ -25,8 +25,8 @@
                 </div>
             </div>
             <div class="overlayfooter">
-                <button v-if="!multiview" class="btn btn-small" @click="history">History</button>
-                <button v-if="multiview" class="btn btn-small" @click="current">Back</button>
+                <button v-if="!multiview" class="btn btn-small" @click="history"><i class="far fa-clock"></i> History</button>
+                <button v-if="multiview" class="btn btn-small" @click="current"><i class="fas fa-chevron-left"></i> Back</button>
             </div>
         </div>
     </div>
