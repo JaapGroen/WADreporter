@@ -48,9 +48,10 @@ export default {
         },
         sortedTests(){
             var tests = _.orderBy(this.filteredTests,[
+                function (item) { return item.type=='datetime';},
                 function (item) { return item.status; },
                 function (item) { return item.display_name; }
-            ],["desc","asc"])
+            ],["desc","desc","asc"])
             return tests
         },
         apiURL(){

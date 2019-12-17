@@ -244,6 +244,4 @@
 </script>
 
 <style>
-
-
 </style>
