@@ -8,7 +8,7 @@
     </div>
     <div class="item_content" v-if="!item.loading">{{item.selector.description}}</div>
     <div class="item_footer" v-bind:class="dateclass">
-      <div>
+      <div v-if="item.result.status">
       <i v-if="item.result.status.datetime==1" class="fas fa-check-circle c1"></i>
       <i v-if="item.result.status.datetime==3" class="fas fa-times-circle c3"></i>
       {{item.result.date | prettydate}}
@@ -32,7 +32,7 @@ import {HTTP} from '../main'
         componentKey: 0,
         idSelector:this.$props.selector.id,
         idResult:0,
-      }
+     }
   },
   created(){
     HTTP.get(this.apiURL+'/selectors/'+this.$props.selector.id+'/results/last')
@@ -41,7 +41,7 @@ import {HTTP} from '../main'
         this.idResult=(resp.data.result.id || 0)
         this.item.tests=resp.data.tests
         this.item.loading=false;
-        this.forceRerender();
+//        this.forceRerender();
     }, error => {
         if (error.response.status==404){
             this.item.loading = false;

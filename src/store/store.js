@@ -4,14 +4,12 @@ import {HTTP} from '@/main'
 
 Vue.use(Vuex)
 
-console.log('loading store...')
-
 export default new Vuex.Store({
   state: {
     token: localStorage.getItem('WADtoken') || '',
     user : JSON.parse(localStorage.getItem('WADuser')) || '',
     selectorFilter: '',
-    api:{ip:'localhost',port:3001}
+    api:{ip:'<wadapi ip here>',port:<wadapi port here>}
   },
   mutations: {
       auth_success(state, data){
