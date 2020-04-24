@@ -14,6 +14,7 @@ export const HTTP = axios.create({
     }
 })
 
+Vue.config.devtools = true
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */

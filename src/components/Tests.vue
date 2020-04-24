@@ -9,15 +9,17 @@
                 </div>
                 <div class="item_footer"></div>
             </div>
-            <TestTile v-for="test in sortedTests" v-bind:test="test" :selector="item.selector" :result="item.result" :key="test.type+test.id" :popup="popup"></TestTile>
+            <TestGroup v-for="(group,index) in displaygroups" v-bind:group="group" :selector="item.selector" :result="item.result" :level="index" :popup="popup" :key="index"></TestGroup>
+<!--            <TestTile v-for="test in sortedTests" v-bind:test="test" :selector="item.selector" :result="item.result" :key="test.type+test.id" :popup="popup"></TestTile>  -->
         </div>
     </div>
 </template>
 
 <script>
-import TestTile from '@/components/TestTile'
+//import TestTile from '@/components/TestTile'
 import {HTTP} from '../main'
 import Navbar from '@/components/Navbar'
+import TestGroup from '@/components/TestGroup'
 import _ from 'lodash'
   
 export default {
@@ -28,13 +30,17 @@ export default {
         popup:this.$route.query.popup,
         item:{tests:[]},
         loading:true,
+        displaygroups:[[],[],[],[],[],[],[],[],[]]
       }
     },
     mounted(){
         HTTP.get(this.apiURL+'/selectors/'+this.idSelector+'/results/'+this.idResult)
         .then(resp => {
-                this.item=resp.data
-                this.loading=false;
+            this.item = resp.data
+            resp.data.tests.forEach((test)=>{
+                this.displaygroups[test.display_level-1].push(test)
+            });
+            this.loading=false;
         }, error => {
             console.log(error)
         })
@@ -58,9 +64,10 @@ export default {
             return 'http://'+this.$store.getters.api.ip+':'+this.$store.getters.api.port+'/api'
         }
     },   
-    components: {
-        TestTile,
-        Navbar
+   components: {
+//        TestTile,
+        Navbar,
+        TestGroup
     },
 }
 </script>
