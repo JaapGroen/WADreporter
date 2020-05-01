@@ -5,7 +5,6 @@
                 Level {{level}} - {{sortedTests.length}} tests
             </div>
         </div>
-	{{userLevel}}
         <div class="tilegroup" v-if="maximized">
             <TestTile v-for="test in sortedTests" v-bind:test="test" :selector="selector" :result="result" :key="test.type+test.id" :popup="popup"></TestTile>
         </div>
@@ -23,14 +22,6 @@ import _ from 'lodash'
           maximized:true
       }
     },
-//    methods:{
-//        minimizeGroup(){
-//            this.maximized = false
-//        },
-//        maximizeGroup(){
-//            this.maximized = true
-//        }
-//    },
     computed:{
         filteredTests(){
             const testFilter=this.$store.getters.selectorFilter

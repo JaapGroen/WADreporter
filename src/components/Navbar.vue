@@ -19,6 +19,11 @@
                     <input style="height:23px;" type="text" class="textbox" v-model="selectorFilter" @input="changeselectorFilter"/>
                     <i class="fas fa-times" @click="clearFilter"></i>
                 </button>
+                <button v-bind:class="{yellow:notes.length>0}" class="btn btn-large menuitem" v-if="(MenuVisible && selector.id>0) || (selector.id>0 && notes.length>0)" @click="openAddNote()" >
+                    <i v-if="notes.length>0" class="fas fa-exclamation-triangle"></i>
+                    <i v-if="notes.length==0" class="fas fa-plus-circle"></i>
+                    Notes
+                </button>
                 <button class="btn btn-large menuitem">
                     <i class="fas fa-caret-left" v-if="!MenuVisible"></i>
                     <i class="fas fa-caret-right" v-if="MenuVisible"></i>
@@ -28,11 +33,13 @@
             </div>
         </div>
         <SelectorAnalytics v-if="showAnalytics" v-on:closeAnalytics="closeAnalytics" v-bind:selector="selector"></SelectorAnalytics>
+        <NotesView v-if="showAddNote" v-on:closeAddNote="closeAddNote"></NotesView>
     </div>
 </template>
 
 <script>
 import SelectorAnalytics from '@/components/SelectorAnalytics'
+import NotesView from '@/components/NotesView'
 
 export default {
     props:['selector'],
@@ -41,12 +48,23 @@ export default {
         FilterBoxVisible:false,
         selectorFilter:this.$store.getters.selectorFilter,
         MenuVisible:false,
-        showAnalytics:false
+        showAnalytics:false,
+        showAddNote:false,
       }
     },  
     computed : {
-      user : function(){ return this.$store.getters.user},
-      isLoggedIn : function(){ return this.$store.getters.isLoggedIn},
+        user : function(){ return this.$store.getters.user},
+        isLoggedIn : function(){ return this.$store.getters.isLoggedIn},
+        currentResult(){
+            return this.$store.getters.currentResult
+        },
+        notes(){
+            if (typeof this.currentResult.data_set === 'undefined') {
+                return []
+            } else {
+                return this.currentResult.data_set.notes
+            }
+        }
     },
     methods: {
       logout: function () {
@@ -85,14 +103,23 @@ export default {
       },
       closeAnalytics(){
           this.showAnalytics=false
+      },
+      openAddNote(){
+          this.showAddNote = true
+      },
+      closeAddNote(){
+          this.showAddNote = false
       }
     },
 	components:{
-		SelectorAnalytics
+		SelectorAnalytics,
+        NotesView
 	}
   }
 </script>
 
 <style>
-
+.btn.yellow{
+    background-color:#eaf518;
+}
 </style>

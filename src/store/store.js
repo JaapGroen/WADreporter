@@ -9,7 +9,8 @@ export default new Vuex.Store({
     token: localStorage.getItem('WADtoken') || '',
     user : JSON.parse(localStorage.getItem('WADuser')) || '',
     selectorFilter: '',
-    api:{ip:'wad api ip here',port:'wad api port here'}
+    api:{ip:'localhost',port:'3000'},
+    currentResult:{}
   },
   mutations: {
       auth_success(state, data){
@@ -27,11 +28,20 @@ export default new Vuex.Store({
           state.api.ip = api.ip
           state.api.port = api.port
       },
+      setCurrentResult(state,result){
+          state.currentResult = result
+      }
   },
   actions: {
     setAPI({commit}, payload){
         return new Promise((resolve, reject) => {
             commit('setAPI', {ip:payload.ip, port:payload.port})
+            resolve(true)
+        })
+    },
+    setCurrentResult({commit}, result){
+        return new Promise((resolve,reject) =>{
+            commit('setCurrentResult',result)
             resolve(true)
         })
     },
@@ -76,6 +86,7 @@ export default new Vuex.Store({
     authStatus: state => state.status,
     user: state => state.user,
     selectorFilter: state => state.selectorFilter,
-    api: state => state.api
+    api: state => state.api,
+    currentResult: state => state.currentResult
   }
 })

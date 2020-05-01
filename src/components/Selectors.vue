@@ -28,6 +28,7 @@ export default {
         }
     },
     mounted(){
+        this.setCurrentResult()
         HTTP.get(this.apiURL+'/selectors').then(resp => {
             this.loaded=true;
             for (let i=0;i<resp.data.selectors.length;i++){
@@ -57,6 +58,11 @@ export default {
         TileGroup,
         Navbar
     },
+    methods:{
+        setCurrentResult(){
+            this.$store.dispatch('setCurrentResult',{})
+        }
+    }
 }
 </script>
 

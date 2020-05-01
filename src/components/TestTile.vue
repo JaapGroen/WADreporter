@@ -121,21 +121,6 @@
     showPopUp(){
         this.PopUpVisible=true;
     },
-/*     showImage(){
-        this.ImageVisible=true;
-    },
-    showTable(){
-        this.TableVisible=true;
-    },
-    closeGraph(){
-        this.GraphVisible=false;
-    },
-    closeImage(){
-        this.ImageVisible=false;
-    },
-    closeTable(){
-        this.TableVisible=false;
-    }, */
     enter_footer(){
         this.hover.footer=true;
     },

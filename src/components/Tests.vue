@@ -10,7 +10,6 @@
                 <div class="item_footer"></div>
             </div>
             <TestGroup v-for="(group,index) in displaygroups" v-bind:group="group" :selector="item.selector" :result="item.result" :level="index" :popup="popup" :key="index"></TestGroup>
-<!--            <TestTile v-for="test in sortedTests" v-bind:test="test" :selector="item.selector" :result="item.result" :key="test.type+test.id" :popup="popup"></TestTile>  -->
         </div>
     </div>
 </template>
@@ -30,7 +29,8 @@ export default {
         popup:this.$route.query.popup,
         item:{tests:[]},
         loading:true,
-        displaygroups:[[],[],[],[],[],[],[],[],[]]
+        displaygroups:[[],[],[],[],[],[],[],[],[]],
+        notes:[]
       }
     },
     mounted(){
@@ -40,6 +40,10 @@ export default {
             resp.data.tests.forEach((test)=>{
                 this.displaygroups[test.display_level-1].push(test)
             });
+            if (resp.data.result.data_set.notes.length>0){
+                this.notes = resp.data.result.data_set.notes
+            }
+            this.setCurrentResult(resp.data.result)
             this.loading=false;
         }, error => {
             console.log(error)
@@ -65,10 +69,14 @@ export default {
         }
     },   
    components: {
-//        TestTile,
         Navbar,
         TestGroup
     },
+    methods:{
+        setCurrentResult(result){
+            this.$store.dispatch('setCurrentResult',result)
+        }
+    }
 }
 </script>
 

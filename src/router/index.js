@@ -57,22 +57,5 @@ router.beforeEach((to, from, next) => {
     }
 })
 
-//router.beforeEach((to, from, next) => {
-//  if(to.path=='/'){
-//    if(store.getters.isLoggedIn){
-//      next('/selectors')
-//    }
-//    next()
-//  }
-//  if(to.matched.some(record => record.meta.requiresAuth)) {
-//    if (store.getters.isLoggedIn) {
-//      next()
-//      return
-//    }
-//    next('/')
-//  } else {
-//    next()
-//  }
-//})
 
 export default router
