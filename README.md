@@ -1,4 +1,4 @@
-# WAreporter
+# WADreporter
 
 > A Vue.js project for displaying results of the WADQC framework
 
@@ -18,7 +18,7 @@
 > cd WADreporter
 > npm install
 ```
-* Run a test version with hot-reloading
+* Run a test version with hot-reloading (you might need to adjust the ip in the vue.config.js file)
 ``` bash
 > npm run serve
 ```
