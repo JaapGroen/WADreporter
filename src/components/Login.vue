@@ -52,6 +52,7 @@
           this.$store.dispatch('login',{apiURL:this.apiURL,credentials:this.credentials})
           .then((resp)=>{
               if (resp.data.success){
+                  this.$store.dispatch('addMessage',{flavor:'alert-green',text:'Hi '+this.credentials.username+', welcome to WADreporter!'})
                   this.$router.push('/selectors').catch(()=>{})
               } else {
                   this.msg = resp.data.msg

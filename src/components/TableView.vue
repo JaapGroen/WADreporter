@@ -46,12 +46,12 @@ export default {
     forceRerender(){
       this.componentKey += 1;
     },
-    csvExport(arr) {     
+    csvExport() {     
       let csvContent = "data:text/csv;charset=utf-8,";
       var str=""
       str+="Date;"+String(this.item[0].test.display_name || this.item[0].test.name)+"\r\n"
       
-      console.log(this.item[0].selector.name)
+      /* console.log(this.item[0].selector.name) */
       
       for(let i=0;i<this.historicData.length;i++){
           let d = new Date(this.historicData[i].x);         
@@ -86,7 +86,7 @@ export default {
   },
   components:{
       TableRow,
-      GraphLoader,
+      /* GraphLoader, */
   },
   computed:{
       filteredHistoricData(){

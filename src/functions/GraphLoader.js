@@ -2,25 +2,26 @@ import {HTTP} from '../main'
 import store from '@/store/store'
 
 function str2date(string){
-  return new Date(Date.parse(string));
-};
+  return new Date(Date.parse(string))
+}
 
 function getcolor(category){
+  var linecolor ={}
   if (category=='limitdanger'){
-    var linecolor = {borderColor:'#d8513f',backgroundColor: "rgba(0,0,0,0.0)",pointRadius:0,borderWidth:3,lineTension:0}
+    linecolor = {borderColor:'#d8513f',backgroundColor: "rgba(0,0,0,0.0)",pointRadius:0,borderWidth:3,lineTension:0}
   } else if (category=='limitwarning'){
-    var linecolor = {borderColor:'#eab63e',backgroundColor: "rgba(0,0,0,0.0)",pointRadius:0,borderWidth:3,lineTension:0}
+    linecolor = {borderColor:'#eab63e',backgroundColor: "rgba(0,0,0,0.0)",pointRadius:0,borderWidth:3,lineTension:0}
   } else if (category=='value'){
-    var linecolor = {borderColor:'#3c6eb9',backgroundColor: "rgba(0,0,0,0.0)",pointRadius:5,lineTension:0,pointHitRadius:10,borderWidth:3,showLine:true}
+    linecolor = {borderColor:'#3c6eb9',backgroundColor: "rgba(0,0,0,0.0)",pointRadius:5,lineTension:0,pointHitRadius:10,borderWidth:3,showLine:true}
   } else if (category=='datevalue'){
-    var linecolor = {borderColor:'#3c6eb9',backgroundColor: "rgba(0,0,0,0.0)",pointRadius:0,borderWidth:3,showLine:true,lineTension:0}
+    linecolor = {borderColor:'#3c6eb9',backgroundColor: "rgba(0,0,0,0.0)",pointRadius:0,borderWidth:3,showLine:true,lineTension:0}
   } else if (category=='randomvalue'){
     var letters = '0123456789ABCDEF';
     var color = '#';
     for (var i = 0; i < 6; i++) {
       color += letters[Math.floor(Math.random() * 16)];
     }
-    var linecolor = {borderColor:color,backgroundColor: "rgba(0,0,0,0.0)",pointRadius:5,lineTension:0,pointHitRadius:10,borderWidth:3,showLine:true}
+    linecolor = {borderColor:color,backgroundColor: "rgba(0,0,0,0.0)",pointRadius:5,lineTension:0,pointHitRadius:10,borderWidth:3,showLine:true}
   }
   return linecolor
 }

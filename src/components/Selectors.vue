@@ -29,6 +29,7 @@ export default {
     },
     mounted(){
         this.setCurrentResult()
+        this.$store.dispatch('addMessage',{flavor:'alert-blue',text:'Test-blue and it should be pretty long so we can see what happend when it is very long!'})
         HTTP.get(this.apiURL+'/selectors').then(resp => {
             this.loaded=true;
             for (let i=0;i<resp.data.selectors.length;i++){
@@ -52,7 +53,9 @@ export default {
                 }
             }
             this.groupArray.sort((a,b) => (a.name > b.name) ? 1 : ((b.name > a.name) ? -1 : 0));
-        }).catch(err => {console.log(err)})
+        }).catch(error => {
+            this.$store.dispatch('addMessage',{flavor:'alert-red',text:error})
+        })
     },
     components: {
         TileGroup,
