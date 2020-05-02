@@ -10,7 +10,8 @@ export default new Vuex.Store({
     user : JSON.parse(localStorage.getItem('WADuser')) || '',
     selectorFilter: '',
     api:{ip:'localhost',port:'3000'},
-    currentResult:{}
+    currentResult:{},
+    messages:[]
   },
   mutations: {
       auth_success(state, data){
@@ -30,19 +31,50 @@ export default new Vuex.Store({
       },
       setCurrentResult(state,result){
           state.currentResult = result
-      }
+      },
+      addMessage(state,message){
+            state.messages.push(message)
+            setTimeout(() => {
+                const index = state.messages.indexOf(message)
+                if (index > -1) {
+                    state.messages.splice(index, 1);
+                }
+            }, 3000);
+      },
+        removeMessage(state,message){
+            const index = state.messages.indexOf(message)
+            if (index > -1) {
+                state.messages.splice(index, 1);
+            }
+        }
   },
   actions: {
     setAPI({commit}, payload){
-        return new Promise((resolve, reject) => {
+        return new Promise((resolve,reject) => {
             commit('setAPI', {ip:payload.ip, port:payload.port})
             resolve(true)
+            reject(false)
         })
     },
     setCurrentResult({commit}, result){
         return new Promise((resolve,reject) =>{
             commit('setCurrentResult',result)
             resolve(true)
+            reject(false)
+        })
+    },
+    addMessage({commit}, message){
+        return new Promise((resolve,reject) =>{
+            commit('addMessage',message)
+            resolve(true)
+            reject(false)
+        })
+    },
+    removeMessage({commit}, message){
+        return new Promise((resolve,reject) =>{
+            commit('removeMessage',message)
+            resolve(true)
+            reject(false)
         })
     },
     login({commit}, payload){
@@ -78,6 +110,7 @@ export default new Vuex.Store({
         localStorage.removeItem('WADuser')
         delete HTTP.defaults.headers['Authorization']
         resolve()
+        reject(false)
       })
     },
   },
@@ -87,6 +120,7 @@ export default new Vuex.Store({
     user: state => state.user,
     selectorFilter: state => state.selectorFilter,
     api: state => state.api,
-    currentResult: state => state.currentResult
+    currentResult: state => state.currentResult,
+    messages: state => state.messages
   }
 })

@@ -46,7 +46,7 @@ export default {
             this.setCurrentResult(resp.data.result)
             this.loading=false;
         }, error => {
-            console.log(error)
+            this.$store.dispatch('addMessage',{flavor:'alert-red',text:error})
         })
     },
     computed:{

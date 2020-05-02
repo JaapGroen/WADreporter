@@ -1,7 +1,15 @@
 <template>
-    <div>
+    <div class="navbar">
         <div class="header" v-if="isLoggedIn && selector">
             <router-link to="/selectors" tag="h1" class="pointer">WADreporter <span>/ {{selector.name}}</span></router-link>
+            
+            <div class="alertbox" v-if="messages.length>0">
+                <div v-for="message in messages" class="alert" v-bind:class="message.flavor">
+                    {{message.text}} &nbsp; &nbsp; &nbsp; 
+                    <i class="fas fa-times pointer" @click="removeMessage(message)"></i>
+                </div>
+            </div>
+            
             <div class="menu" @mouseover="MenuVisible=true" @mouseleave="MenuVisible=false">
                 <button class="btn btn-large menuitem"  v-if="MenuVisible" @click="reloadSelectors">
                     <i class="fas fa-sync"></i>
@@ -64,6 +72,9 @@ export default {
             } else {
                 return this.currentResult.data_set.notes
             }
+        },
+        messages(){
+            return this.$store.getters.messages
         }
     },
     methods: {
@@ -73,6 +84,9 @@ export default {
           this.$router.push('/login')
         })
       },
+        removeMessage(message){
+            this.$store.dispatch('removeMessage',message)
+        },
       toggleFilter(){
         this.FilterBoxVisible=!this.FilterBoxVisible
       },
@@ -121,5 +135,49 @@ export default {
 <style>
 .btn.yellow{
     background-color:#eaf518;
+}
+
+.alert{
+    display:flex;
+    flex-direction:row;
+    justify-content:space-between;
+    align-items:center;
+    padding:10px;
+    border-radius:5px;
+    border:1px solid white;
+}
+
+.alert-blue{
+    background-color:#4a89e8;
+}
+
+.alert-green{
+    background-color:#58a55c;
+}
+
+.alert-orange{
+    background-color:#eab63e;
+}
+
+.alert-red{
+    background-color:#d8513f;
+}
+
+.header{
+  display:flex;
+  flex-direction:row;
+  height:100px;
+  align-items:center;
+  box-sizing: border-box;
+  padding:20px;
+  justify-content:space-between;
+  border-bottom:2px solid #FFFFFF;
+  position:fixed;
+  width:100%;
+}
+
+.navbar{
+    display:flex;
+    flex-direction:column;
 }
 </style>

@@ -251,18 +251,7 @@ body{
   padding-right:5px;
 }
 
-.header{
-  display:flex;
-  flex-direction:row;
-  height:100px;
-  align-items:center;
-  box-sizing: border-box;
-  padding:20px;
-  justify-content:space-between;
-  border-bottom:2px solid #FFFFFF;
-  position:fixed;
-  width:100%;
-}
+
 
 h1 span{
     font-size:16px;

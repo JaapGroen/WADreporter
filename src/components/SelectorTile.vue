@@ -47,7 +47,7 @@ import {HTTP} from '../main'
             this.item.loading = false;
             this.item.selector.description = error.response.data.msg
         } else {
-            console.log(error)
+            this.$store.dispatch('addMessage',{flavor:'alert-red',text:error})
         }
     })
   },
