@@ -307,7 +307,10 @@ h1 span{
   flex-direction:row;
   width:100%;
   justify-content:space-around;
+  align-items:center;
   cursor:pointer;
+  padding-top:5px;
+  padding-bottom:5px;
 }
 
 .tablerow:nth-child(even){
@@ -358,6 +361,17 @@ h1 span{
   background-color:#323b47;
   width:100%;
   height:30px;
+  border-bottom:3px solid #3c6eb9;
+  color:white;
+  font-family: 'Roboto', sans-serif;
+  border-radius: 5px;
+}
+
+.selectbox{
+  border:none;
+  background-color:#323b47;
+  width:100%;
+  height:35px;
   border-bottom:3px solid #3c6eb9;
   color:white;
   font-family: 'Roboto', sans-serif;

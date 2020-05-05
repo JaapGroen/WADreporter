@@ -29,7 +29,6 @@ export default {
     },
     mounted(){
         this.setCurrentResult()
-        this.$store.dispatch('addMessage',{flavor:'alert-blue',text:'Test-blue and it should be pretty long so we can see what happend when it is very long!'})
         HTTP.get(this.apiURL+'/selectors').then(resp => {
             this.loaded=true;
             for (let i=0;i<resp.data.selectors.length;i++){
