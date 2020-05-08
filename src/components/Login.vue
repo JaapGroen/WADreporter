@@ -6,15 +6,15 @@
         <span v-if="showAPI">WADQC API information</span>
       </div>
       <div class="overlaycontent">
-        <form v-if="!showAPI" class="loginform" @submit.prevent="login">
+        <form v-if="!showAPI" class="loginform" @submit.prevent="login()">
           <input class="textbox" required v-model="credentials.username" type="text" placeholder="Username..."/>
           <input class="textbox" required v-model="credentials.password" type="password" placeholder="Password..."/>
-          <button class="btn btn-large" @click="login()">Login</button>
+          <button class="btn btn-large">Login</button>
         </form>
-        <form v-if="showAPI" class="loginform" @submit.prevent="setAPI">
+        <form v-if="showAPI" class="loginform" @submit.prevent="setAPI()">
           <input class="textbox" required v-model="api.ip" type="text"/>
           <input class="textbox" required v-model="api.port" type="text"/>
-          <button class="btn btn-large" @click="setAPI()">Opslaan</button>
+          <button class="btn btn-large">Opslaan</button>
         </form>
       </div>
       <div class="overlayfooter">
