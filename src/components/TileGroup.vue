@@ -31,6 +31,42 @@
   } 
 </script>
 
-<style>
+<style scoped>
+.grouplabel{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:space-around;
+  background:#323b47;
+  height:250px;
+  width:50px;
+  border-radius:25px;
+  margin:20px;
+}
 
+.vertical-text{
+  transform: rotate(270deg);
+  white-space: nowrap;
+}
+
+.tilerow{
+  display:flex;
+  flex-direction:row;
+  flex-wrap:no-wrap;
+  width:100%;
+}
+
+.tilerow:nth-child(even){
+    background-color: #0c111b;
+}
+
+.tilerow:nth-child(odd){
+    background-color: #101622;
+}
+
+.tilegroup{
+  display:flex;
+  flex-direction:row;
+  flex-wrap:wrap;
+}
 </style>

@@ -5,12 +5,12 @@
         {{item[0].test.display_name || item[0].test.name}}
         <i class="fas fa-times pointer" @click="closePopUp"></i>
       </div>
-      <div class="tablehead"> 
-        <div class="tableheader">Date</div>
-        <div class="tableheader">
+      <div class="overlayhead"> 
+        <div class="date">Date</div>
+        <div class="value">
           <input style="height:20px;" type="text" class="textbox" v-model="valueFilter" placeholder="Value..."/>
         </div>
-        <div class="tableheader">Limit</div> 
+        <div class="limit">Limit</div> 
       </div>
       <div class="overlaycontent">
         <TableRow v-if="loaded" v-for="test in filteredHistoricData" v-bind:test="test" :key="test.id"></TableRow>
@@ -100,6 +100,27 @@ export default {
 
 </script>
 
-<style>
+<style scoped>
+.date{
+    padding-left:5px;
+    padding-right:5px;
+    flex:1 0 0;
+}
 
+.value{
+    padding-left:5px;
+    padding-right:5px;
+    flex:1 0 0;
+}
+
+.limit{
+    padding-left:5px;
+    padding-right:5px;
+    flex:1 0 0;
+}
+
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: white;
+  opacity: 1; /* Firefox */
+}
 </style>

@@ -228,5 +228,40 @@
 }
 </script>
 
-<style>
+<style scoped>
+.tlimit{
+  position:absolute;
+  left:150px;
+}
+
+.line{
+  position:absolute;
+  width:5px;
+}
+
+.dot{
+  position:absolute;
+  width:14px;
+  height:14px;
+  border-radius:50%;
+  z-index: 50;
+}
+
+.tdot{
+  position:absolute;
+  right:150px;
+  padding-left:15px;
+  word-break: break-word;
+}
+
+.item_img{
+  width:160px;
+  height:160px;
+}
+
+.date_select{
+    background:#323b47;
+    border:none;
+    color:white;
+}
 </style>

@@ -132,7 +132,7 @@ export default {
   }
 </script>
 
-<style>
+<style scoped>
 .btn.yellow{
     background-color:#eaf518;
 }

@@ -1,9 +1,9 @@
 <template>
     <div class="tablerow" @click=gotoTest(test.selector.id,test.result.id) v-bind:style="highlight" @mouseover="hover = true" @mouseleave="hover = false">
-        <div class="tablecell">{{test.x | isodate}}</div>
-        <div class="tablecell" v-bind:class="c_class">{{test.y}}</div>
-        <div class="tablecell" v-if="!!test.limit">{{test.limit}}</div>
-        <div class="tablecell" v-if="!test.limit">-</div>
+        <div class="date">{{test.x | isodate}}</div>
+        <div class="value" v-bind:class="c_class">{{test.y}}</div>
+        <div class="limit" v-if="!!test.limit">{{test.limit}}</div>
+        <div class="limit" v-else>-</div>
     </div>
 </template>
 
@@ -60,9 +60,22 @@ export default {
 
 </script>
 
-<style>
+<style scoped>
+.date{
+    padding-left:5px;
+    padding-right:5px;
+    flex:1 0 0;
+}
 
+.value{
+    padding-left:5px;
+    padding-right:5px;
+    flex:1 0 0;
+}
 
-
-
+.limit{
+    padding-left:5px;
+    padding-right:5px;
+    flex:1 0 0;
+}
 </style>

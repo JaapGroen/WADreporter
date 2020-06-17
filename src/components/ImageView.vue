@@ -87,6 +87,29 @@ export default {
 
 </script>
 
-<style>
+<style scoped>
+.img_large{
+  height:100%;
+}
 
+.thumbnails{
+    display:flex;
+    flex-direction:row;
+    flex-wrap:wrap;
+}
+
+.thumbnailblock{
+    display:flex;
+    flex-direction:column;
+    margin:5px;
+    cursor: pointer;
+}
+
+.thumbnailblock:hover {
+    background-color:lightblue;
+}
+
+.thumbnail{
+    height:100px;
+}
 </style>

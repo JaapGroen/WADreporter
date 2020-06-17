@@ -15,7 +15,6 @@
 </template>
 
 <script>
-//import TestTile from '@/components/TestTile'
 import {HTTP} from '../main'
 import Navbar from '@/components/Navbar'
 import TestGroup from '@/components/TestGroup'
@@ -80,5 +79,15 @@ export default {
 }
 </script>
 
-<style>
+<style scoped>
+.grid{
+  display:flex;
+  flex-direction:row;
+  flex-wrap:wrap;
+  top:100px;
+  height:calc(100% - 100px);
+  overflow: auto;
+  position:fixed;
+  width:100%;
+}
 </style>

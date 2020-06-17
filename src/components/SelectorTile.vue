@@ -1,62 +1,89 @@
 <template>
-  <router-link :to="{name:'Tests',params:{idSelector:idSelector,idResult:idResult}}" tag="div" class="block">
-    <div class="item_title" v-bind:class="testclass">
-      {{item.selector.name}}
-    </div>
-    <div class="item_content" v-if="item.loading">
-      <i class="fas fa-sun fa-2x fa-spin"></i>
-    </div>
-    <div class="item_content" v-if="!item.loading">{{item.selector.description}}</div>
-    <div class="item_footer" v-bind:class="dateclass">
-      <div v-if="item.result.status">
-      <i v-if="item.result.status.datetime==1" class="fas fa-check-circle c1"></i>
-      <i v-if="item.result.status.datetime==3" class="fas fa-times-circle c3"></i>
-      {{item.result.date | prettydate}}
-      </div>
-    </div>
-  </router-link>
+    <div class="block">
+        <div class="item_title" v-bind:class="testclass">
+            {{selector.name}}
+        </div>
+        <div class="item_content" v-if="item.loading">
+            <i class="fas fa-sun fa-2x fa-spin"></i>
+        </div>
+        <div class="item_content" v-if="item.result.status.tests==0">
+            {{selector.description}}
+        </div>
+        <router-link :to="{name:'Tests',params:{idSelector:idSelector,idResult:idResult}}" tag="div" class="item_content" v-else>
+            {{selector.description}}
+        </router-link>
+        <div class="item_footer pointer" v-bind:class="dateclass">
+            <div v-if="openProcesses.length>0" @click="openInputForm" class="awaiting">
+                <i class="fas fa-exclamation-triangle c4"></i> 
+                <span class="c4">Waiting for input!</span>
+            </div>
+            <div v-else-if="item.result.status">
+                <i v-if="item.result.status.datetime==1" class="fas fa-check-circle c1"></i>
+                <i v-else="item.result.status.datetime==3" class="fas fa-times-circle c3"></i>
+                {{item.result.date | prettydate}}
+            </div>
+        </div>
+        <InputView v-if="showInputForm" v-bind:process="openProcesses[0]" v-on:closeForm="closeForm">
+        </InputView>
+  </div>
 </template>
 
 <script>
 import {HTTP} from '../main'
+import InputView from '@/components/InputView'
 
  export default {
   props: ['selector'],
   data(){
       return {
         item:{loading:true,
-            selector:this.$props.selector,
             result:{},
             tests:{},
             },
         componentKey: 0,
-        idSelector:this.$props.selector.id,
+        idSelector:this.selector.id,
         idResult:0,
+        showInputForm:false,
+        openProcesses:[]
      }
   },
   created(){
-    HTTP.get(this.apiURL+'/selectors/'+this.$props.selector.id+'/results/last')
+    HTTP.get(this.apiURL+'/selectors/'+this.selector.id+'/results/last')
     .then(resp => {
         this.item.result=resp.data.result
         this.idResult=(resp.data.result.id || 0)
         this.item.tests=resp.data.tests
-        this.item.loading=false;
-//        this.forceRerender();
+        HTTP.get(this.apiURL+'/selectors/'+this.selector.id+'/processes').then(resp =>{
+            this.openProcesses = resp.data.processes['waiting for input']
+            this.item.loading=false
+        })
     }, error => {
         if (error.response.status==404){
-            this.item.loading = false;
-            this.item.selector.description = error.response.data.msg
+            HTTP.get(this.apiURL+'/selectors/'+this.selector.id+'/processes').then(resp =>{
+                this.openProcesses = resp.data.processes['waiting for input']
+                this.item.loading=false
+                this.selector.description = error.response.data.msg
+                this.item.result ={'status':{'tests':0}}
+            })
         } else {
             this.$store.dispatch('addMessage',{flavor:'alert-red',text:error})
         }
     })
   },
-  components:{
-  },
+    components:{
+        InputView
+    },
   methods:{
     forceRerender(){
       this.componentKey += 1;
     },
+    openInputForm(){
+        this.showInputForm = true
+    },
+    closeForm(){
+        console.log('colseForm')
+        this.showInputForm = false
+    }
   },
   computed:{
     testclass: function(){
@@ -98,6 +125,5 @@ import {HTTP} from '../main'
  }
 </script>
 
-<style>
-
+<style scoped>
 </style>
