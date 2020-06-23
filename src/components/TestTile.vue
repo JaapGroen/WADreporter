@@ -48,6 +48,14 @@
       <img class="item_img" v-bind:src="'data:image/jpg;base64,'+item.test.value"/>
     </div>
     
+    <div class="item_content" v-if="item.test.type=='bool'" @click="showPopUp">
+      <div class="tlimit" v-bind:style="{top:'82px'}" v-if="item.test.limit">
+        {{item.test.limit}}
+      </div>
+      <div class="dot" v-bind:class="bgc_class"> </div>
+      <div class="tdot" v-bind:class="c_class">{{item.test.value}}</div>
+    </div>
+    
     <div class="item_footer">
         <div class="item_date" v-if="item.test.type=='datetime'">
             <i v-if="loading_results" class="fas fa-sun fa-spin"></i>
