@@ -8,22 +8,23 @@
 </template>
 
 <script>
-  import SelectorTile from '@/components/SelectorTile'
+import SelectorTile from '@/components/SelectorTile'
+import _ from 'lodash'
   
-  export default {
-    props: ['group'],  
+export default {
+    props: {group: Object},  
     data(){
-      return {
+        return {
       
-      }
+        }
     },
     computed:{
-      filteredSelectors(){
-        const selectorFilter=this.$store.getters.selectorFilter
-        return this.$props.group.selectors.filter(function(el){
-          return el.name.toLowerCase().includes(selectorFilter)
-        })
-      }
+        filteredSelectors(){
+            return this.group.selectors.filter((selector)=>{
+                return selector.name.toLowerCase().includes(this.$store.getters.filter.toLowerCase()) ||
+                selector.description.toLowerCase().includes(this.$store.getters.filter.toLowerCase())
+            })
+        }
     },
     components: {
         SelectorTile,

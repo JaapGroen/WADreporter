@@ -1,8 +1,8 @@
 <template>
     <div class="tablerow" v-bind:style="highlight" @mouseover="hover = true" @mouseleave="hover = false">
-        <div class="tablecell">{{note.data_tag.name}}</div>
-        <div class="tablecell">{{note.description}}</div>
-        <div class="tablecell">
+        <div class="name">{{note.data_tag.name}}</div>
+        <div class="description">{{note.description}}</div>
+        <div class="buttons">
             <button class="btn btn-small" @click="deleteNote()"><i class="fas fa-trash-alt"></i> Remove note</button>
         </div>
     </div>
@@ -18,21 +18,14 @@ export default {
         hover:false,
       }
   },
-  methods:{
-    forceRerender(){
-      this.componentKey += 1;
+    methods:{
+        forceRerender(){
+            this.componentKey += 1;
+        },
+        deleteNote(){
+            this.$emit('deleteNote',this.note)
+        }
     },
-    deleteNote(){
-        HTTP.delete(this.apiURL+'/datasets/'+this.currentResult.data_set.id+'/notes/'+this.note.id).then(resp => {
-            console.log(resp.data)
-            HTTP.get(this.apiURL+'/selectors/'+this.currentResult.selector.id+'/results/'+this.currentResult.id).then(resp =>{
-                this.$store.dispatch('setCurrentResult',resp.data.result)
-            })
-        },(error) =>{
-            this.$store.dispatch('addMessage',{flavor:'alert-red',text:error})
-        })
-    }
-  },
   computed:{
     highlight: function(){
         if (this.hover){
@@ -51,8 +44,21 @@ export default {
 </script>
 
 <style scoped>
+.name{
+    padding-left:5px;
+    padding-right:5px;
+    flex:1 0 0;
+}
 
+.description{
+    padding-left:5px;
+    padding-right:5px;
+    flex:2 0 0;
+}
 
-
-
+.buttons{
+    padding-left:5px;
+    padding-right:5px;
+    width:190px;
+}
 </style>

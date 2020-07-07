@@ -12,9 +12,9 @@ function getcolor(category){
   } else if (category=='limitwarning'){
     linecolor = {borderColor:'#eab63e',backgroundColor: "rgba(0,0,0,0.0)",pointRadius:0,borderWidth:3,lineTension:0}
   } else if (category=='value'){
-    linecolor = {borderColor:'#3c6eb9',backgroundColor: "rgba(0,0,0,0.0)",pointRadius:5,lineTension:0,pointHitRadius:10,borderWidth:3,showLine:true}
+    linecolor = {borderColor:'#4a89e8',backgroundColor: "rgba(0,0,0,0.0)",pointRadius:5,lineTension:0,pointHitRadius:10,borderWidth:3,showLine:true}
   } else if (category=='datevalue'){
-    linecolor = {borderColor:'#3c6eb9',backgroundColor: "rgba(0,0,0,0.0)",pointRadius:0,borderWidth:3,showLine:true,lineTension:0}
+    linecolor = {borderColor:'#4a89e8',backgroundColor: "rgba(0,0,0,0.0)",pointRadius:5,lineTension:0,pointHitRadius:10,borderWidth:3,showLine:false}
   } else if (category=='randomvalue'){
     var letters = '0123456789ABCDEF';
     var color = '#';

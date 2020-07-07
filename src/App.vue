@@ -7,7 +7,7 @@
 </template>
 
 <script>
-  import Graph from './components/Graph'
+
   import store from './store/store'
   import router from './router'
   import {HTTP} from './main'
@@ -113,7 +113,7 @@ i{
   flex-direction:row;
   align-items:center;
   justify-content:center;
-  background-color:rgba(0, 0, 0, 0.5);
+  background-color:rgba(0, 0, 0, 0.15);
   height:100%;
   width:100%;
   z-index:75;
@@ -258,6 +258,10 @@ i{
     color:white;
     font-family: 'Roboto', sans-serif;
     border-radius: 5px;
+}
+
+.pointer{
+    cursor:pointer;
 }
 </style>
 

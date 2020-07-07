@@ -2,14 +2,14 @@
     <div class="tilerow" v-if="sortedTests.length>0 && accessGranted">
         <div class="grouplabeltest" @click="maximized=!maximized">
             <div class="grouplabel">
-                <span class="vertical-text">Level {{level}} - {{sortedTests.length}} tests</span>
+                <span class="vertical-text">{{group.name}} - {{sortedTests.length}} tests</span>
             </div>
             <!--<div class="labeltext">
                 Level {{level}} - {{sortedTests.length}} tests
             </div>-->
         </div>
         <div class="tilegroup" v-if="maximized">
-            <TestTile v-for="test in sortedTests" v-bind:test="test" :selector="selector" :result="result" :key="test.type+test.id" :popup="popup"></TestTile>
+            <TestTile v-for="test in sortedTests" v-bind:test="test" :key="test.type+test.id"></TestTile>
         </div>
     </div>
 </template>
@@ -19,7 +19,7 @@ import TestTile from '@/components/TestTile'
 import _ from 'lodash'
 
   export default {
-    props: ['group','selector','result','level','popup'],
+    props: ['group'],
     data(){
       return {
           maximized:true
@@ -27,16 +27,17 @@ import _ from 'lodash'
     },
     computed:{
         filteredTests(){
-            const testFilter=this.$store.getters.selectorFilter
-            return this.group.filter(function(el){
-                return el.name.toLowerCase().includes(testFilter)
+            return this.group.tests.filter((test)=>{
+                return test.name.toLowerCase().includes(this.$store.getters.filter.toLowerCase()) ||
+                test.display_name.toLowerCase().includes(this.$store.getters.filter.toLowerCase()) ||
+                test.value.toLowerCase().includes(this.$store.getters.filter.toLowerCase())
             })
         },
         sortedTests(){
             var tests = _.orderBy(this.filteredTests,[
-                function (item) { return item.type=='datetime';},
-                function (item) { return item.status; },
-                function (item) { return item.display_name; }
+                function (test) { return test.type=='datetime';},
+                function (test) { return test.status; },
+                function (test) { return test.display_name; }
             ],["desc","desc","asc"])
             return tests
         },
