@@ -1,5 +1,5 @@
 <template>
-    <div class="tablerow" @click=gotoTest(test.selector.id,test.result.id) v-bind:style="highlight" @mouseover="hover=true" @mouseleave="hover=false">
+    <div class="tablerow" @click=gotoTest(test.selector.id,test.result.id) @mouseover="hover=true" @mouseleave="hover=false">
         <div class="date">{{resulttest.result.date | isodate}}</div>
         <div class="value" v-bind:class="c_class">{{resulttest.test.value}}</div>
         <div class="limit" v-if="!!resulttest.test.limit">{{resulttest.test.limit}}</div>
@@ -8,9 +8,6 @@
 </template>
 
 <script>
-import TableRow from '@/components/TableRow'
-
-
 export default {
     props:['resulttest'],
     data(){
@@ -29,19 +26,16 @@ export default {
     },
     computed:{
         c_class(){
-            if(!!this.resulttest.test.limit){
+            if(this.resulttest.test.limit){
                 if(this.resulttest.test.limit==this.resulttest.test.value){
                     return 'c1'
                 } else {
                     return 'c3'  
                 }
+            } else {
+                return 'c0'
             }
         },
-        highlight: function(){
-            if (this.hover){
-                return 'background-color:#141a26;'
-            }
-        }
     }
 }
 

@@ -1,9 +1,8 @@
 <template>
-  <div class="fullpage">
-    <Navbar></Navbar>
-    <router-view></router-view>
+    <div class="fullpage">
+        <Navbar></Navbar>
+        <router-view></router-view>
     </div>
-  </div>
 </template>
 
 <script>

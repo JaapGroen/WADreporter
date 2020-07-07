@@ -7,31 +7,36 @@
 </template>
 
 <script>
+import store from './store/store'
+import router from './router'
+import {HTTP} from './main'
 
-  import store from './store/store'
-  import router from './router'
-  import {HTTP} from './main'
-
-  export default {
+export default {
     name: 'app',
     data(){
-      return {
-      }
+        return {
+        }
     },
     components: { 
     },
-    created: function () {
-      HTTP.interceptors.response.use(undefined, err => {
-        return new Promise(function (resolve, reject) {
-          if ((err.response.status === 401 || err.response.status === 422) && err.config && !err.config.__isRetryRequest) {
-            store.dispatch('logout')
-            .then(() => {
-              router.push('/login')
-            })
-          }
-          throw err;
-        });
-      });
+    created(){
+        HTTP.interceptors.response.use((response) => {
+
+            if (response.status === 200 || response.status === 201){
+                return Promise.resolve(response)
+            } else {
+                return Promise.reject(response)
+            }
+        },(error)=>{
+            if (error.response.config.url.includes('github')){
+                return Promise.reject(error.response)
+            }
+            if (error.response.status === 401 || error.response.status === 422){
+                store.dispatch('logout').then(()=>{
+                    router.push('/login')
+                })
+            }
+        })
     },
   }
 </script>
@@ -196,6 +201,10 @@ i{
 
 .tablerow:nth-child(odd){
     background:#101622;
+}
+
+.tablerow:hover {
+    background-color:#141a26;
 }
 
 /* general form input style*/

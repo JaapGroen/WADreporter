@@ -13,8 +13,6 @@
 </template>
 
 <script>
-import {HTTP} from '@/main'
-
 export default {
     
   props:['input'],

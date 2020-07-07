@@ -114,10 +114,11 @@ export default {
             plugins:{
                 labels:{
                     render:function(args){
+                        var label
                         if (args.value>0){
-                            var label = args.value
+                            label = args.value
                         } else {
-                            var label=''
+                            label=''
                         }
                         return label
                     },

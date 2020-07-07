@@ -19,7 +19,7 @@
             </div>
             <div class="overlayfooter">
                 <div>
-                    <button class="btn btn-small" @click="$router.go(-1)"><i class="fas fa-list"></i> Back</button>
+                    <button class="btn btn-small" @click="$router.go(-1)"><i class="fas fa-th"></i> Back</button>
                 </div>
                 <div></div>
                 <div></div>
@@ -59,12 +59,12 @@ export default {
                 headers: {'Content-Type':'multipart/form-data'}
             }).then(resp => {
                 if (resp.data.success){
-                    console.log(resp.data.msg)
+                    this.$store.dispatch('addMessage',{flavor:'alert-green',text:resp.data.msg})
                 } else {
-                    this.msg = resp.data.msg
+                    this.$store.dispatch('addMessage',{flavor:'alert-red',text:resp.data.msg})
                 }
             },error =>{
-                this.msg = error
+                this.$store.dispatch('addMessage',{flavor:'alert-red',text:error})
             })
         },       
     },

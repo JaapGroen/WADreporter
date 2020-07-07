@@ -4,7 +4,7 @@
             <router-link to="/selectors" tag="h1" class="pointer">WADreporter <span v-if="show_selectorname" class="selectorname">/ {{selectorresult.selector.name}}</span></router-link>
             
             <div class="alertbox" v-if="messages.length>0">
-                <div v-for="message in messages" class="alert" v-bind:class="message.flavor">
+                <div v-for="(message,index) in messages" class="alert" v-bind:class="message.flavor" :key="index">
                     {{message.text}} &nbsp; &nbsp; &nbsp; 
                     <i class="fas fa-times pointer" @click="removeMessage(message)"></i>
                 </div>

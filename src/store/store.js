@@ -51,32 +51,52 @@ export default new Vuex.Store({
     actions: {
         setAPI({commit}, payload){
             return new Promise((resolve,reject) => {
-                commit('setAPI', {ip:payload.ip, port:payload.port})
-                resolve(true)
+                try {
+                    commit('setAPI', {ip:payload.ip, port:payload.port})
+                    resolve(true)
+                } catch(error) {
+                    reject(error)
+                }
             })
         },
         setSelectorResult({commit}, selectorresult){
             return new Promise((resolve,reject) =>{
-                commit('setSelectorResult',selectorresult)
-                resolve(true)
+                try {
+                    commit('setSelectorResult',selectorresult)
+                    resolve(true)
+                } catch(error){
+                    reject(error)
+                }
             })
         },
         setFilter({commit}, filter){
             return new Promise((resolve,reject) =>{
-                commit('setFilter',filter)
-                resolve(true)
+                try {
+                    commit('setFilter',filter)
+                    resolve(true)
+                } catch(error){
+                    reject(error)
+                }
             })
         },
         addMessage({commit}, message){
             return new Promise((resolve,reject) =>{
-                commit('addMessage',message)
-                resolve(true)
+                try {
+                    commit('addMessage',message)
+                    resolve(true)
+                } catch(error) {
+                    reject(error)
+                }
             })
         },
         removeMessage({commit}, message){
             return new Promise((resolve,reject) =>{
-                commit('removeMessage',message)
-                resolve(true)
+                try {
+                    commit('removeMessage',message)
+                    resolve(true)
+                } catch(error) {
+                    reject(error)
+                }
             })
         },
         login({commit}, payload){

@@ -19,7 +19,7 @@
             </router-link>
             <div v-else-if="result.status">
                 <i v-if="result.status.datetime==1" class="fas fa-check-circle c1"></i>
-                <i v-else="result.status.datetime==3" class="fas fa-times-circle c3"></i>
+                <i v-else-if="result.status.datetime==3" class="fas fa-times-circle c3"></i>
                 {{result.date | prettydate}}
             </div>
         </div>
@@ -53,7 +53,7 @@ import {HTTP} from '../main'
                 this.loading = false
             },(error)=>{
                 if (error.response.status == 404){
-                    console.clear();
+                    // console.clear();
                     HTTP.get(this.apiURL+'/selectors/'+this.selector.id+'/processes').then(resp =>{
                         this.openProcesses = resp.data.processes['waiting for input']
                         this.result = false

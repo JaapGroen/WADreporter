@@ -18,7 +18,7 @@
             </div>
             <div class="overlaycontent" v-if="multiview && !thumbs_loading">
                 <div class="thumbnails">                
-                    <div v-for="thumbnail in thumbnails" class="thumbnailblock" @click="change_result(thumbnail)">
+                    <div v-for="thumbnail in thumbnails" class="thumbnailblock" @click="change_result(thumbnail)" :key="thumbnail.id">
                         <img class="thumbnail" v-bind:src="'data:image/jpg;base64,'+thumbnail.y"/>
                         {{thumbnail.x | isodate}}
                     </div>
@@ -125,7 +125,7 @@ export default {
 }
 
 .thumbnailblock:hover {
-    background-color:lightblue;
+    background-color:#141a26;
 }
 
 .thumbnail{

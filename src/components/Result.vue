@@ -15,7 +15,7 @@
 <script>
 import {HTTP} from '../main'
 import TestsGroup from '@/components/TestsGroup'
-import _ from 'lodash'
+
   
 export default {
     data(){

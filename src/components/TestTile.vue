@@ -148,7 +148,7 @@ import {HTTP} from '../main'
                     var today = new Date();
                     today = today.getTime();
                     var limitday = today - (item.limit*1000*60*60*24);
-                    var limitdaydate = new Date(limitday)
+                    // var limitdaydate = new Date(limitday)
                     arr=[today,imageday,limitday]
                     maxV = Math.max.apply(Math,arr)
                     minV = Math.min.apply(Math,arr)

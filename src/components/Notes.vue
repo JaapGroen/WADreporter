@@ -22,7 +22,7 @@
                 <div v-if="showAddNote" class="tablerow">
                     <div class="name">
                         <select class="selectbox" v-model="newNote.data_tag">
-                            <option v-for="option in data_tags" :value="option.id">{{option.name}}</option>
+                            <option v-for="option in data_tags" :value="option.id" :key="option.id">{{option.name}}</option>
                         </select>
                     </div>
                     <div class="description">
@@ -82,10 +82,14 @@ export default {
             formData.append('description',this.newNote.description)
             HTTP.post(this.apiURL+'/datasets/'+this.dataset.id+'/notes',formData,{
               headers: {'Content-Type':'multipart/form-data'}
-            }).then(resp => {
+            }).then((resp) => {
+                if (resp.data.success){
                     this.newNote = {'data_tag':'','description':''}
                     this.showAddNote = false
                     this.updateNotes()
+                } else {
+                    this.$store.dispatch('addMessage',{flavor:'alert-orange',text:resp.data.msg})
+                }
             })
         },
         cancelAddNote(){
@@ -100,7 +104,11 @@ export default {
         },
         deleteNote(note){
             HTTP.delete(this.apiURL+'/datasets/'+this.dataset.id+'/notes/'+note.id).then(resp => {
-                this.updateNotes()
+                if (resp.data.success){
+                    this.updateNotes()
+                } else {
+                    this.$store.dispatch('addMessage',{flavor:'alert-orange',text:resp.data.msg})
+                }
             })
         }
     },

@@ -1,5 +1,5 @@
 <template>
-    <div class="tablerow" v-bind:style="highlight" @mouseover="hover = true" @mouseleave="hover = false">
+    <div class="tablerow" @mouseover="hover = true" @mouseleave="hover = false">
         <div class="name">{{note.data_tag.name}}</div>
         <div class="description">{{note.description}}</div>
         <div class="buttons">
@@ -9,15 +9,13 @@
 </template>
 
 <script>
-import {HTTP} from '../main'
-
 export default {
-  props:['note'],
-  data(){
-      return {
-        hover:false,
-      }
-  },
+    props:['note'],
+    data(){
+        return {
+            hover:false,
+        }
+    },
     methods:{
         forceRerender(){
             this.componentKey += 1;
@@ -26,19 +24,11 @@ export default {
             this.$emit('deleteNote',this.note)
         }
     },
-  computed:{
-    highlight: function(){
-        if (this.hover){
-            return 'background-color:#141a26;'
-        }
-    },
-    apiURL(){
-        return 'http://'+this.$store.getters.api.ip+':'+this.$store.getters.api.port+'/api'
-    },
-    currentResult(){
-        return this.$store.getters.currentResult
-    },
-  }
+    computed:{
+        apiURL(){
+            return 'http://'+this.$store.getters.api.ip+':'+this.$store.getters.api.port+'/api'
+        },
+    }
 }
 
 </script>

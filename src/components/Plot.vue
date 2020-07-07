@@ -30,16 +30,16 @@
 
 
                     <select v-if="selects.dataset" class="date_select" v-model="selected_dataset">
-                        <option v-for="dataset in datasets" v-bind:value="dataset">{{dataset.name}}</option>
+                        <option v-for="dataset in datasets" v-bind:value="dataset" :key="dataset.id">{{dataset.name}}</option>
                     </select>
 
                     <select v-if="selects.test" class="date_select" v-model="selected_test">
-                        <option v-for="test in tests" v-bind:value="test">{{test.display_name || test.name}}</option>
+                        <option v-for="test in tests" v-bind:value="test" :key="test.id">{{test.display_name || test.name}}</option>
                     </select>
                     
                     <button @click="addtoPlot" v-if="buttons.addtest && selected_test.display_name!='Choose a test'" class="btn btn-small"><i class="fas fa-plus-square"></i> Add test</button>
 
-                    <button @click="removeDataset" v-if="buttons.removedataset && selected_dataset.name!='Choose a dataset'"" class="btn btn-small"><i class="fas fa-minus-square"></i> Remove dataset</button>
+                    <button @click="removeDataset" v-if="buttons.removedataset && selected_dataset.name!='Choose a dataset'" class="btn btn-small"><i class="fas fa-minus-square"></i> Remove dataset</button>
 
                     <span v-if="loading_extra">
                         Loading {{selected_selector.name}} / {{selected_test.name}} <i class="fas fa-sun fa-spin"></i>

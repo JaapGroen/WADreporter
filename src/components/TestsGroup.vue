@@ -59,6 +59,8 @@ import _ from 'lodash'
                 } else {
                     return false
                 }
+            } else {
+                return false
             }
         }
     },

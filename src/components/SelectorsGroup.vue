@@ -9,7 +9,6 @@
 
 <script>
 import SelectorTile from '@/components/SelectorTile'
-import _ from 'lodash'
   
 export default {
     props: {group: Object},  

@@ -1,6 +1,8 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import store from '../store/store.js'
+import {HTTP} from '@/main'
+
 import Login from '@/components/Login'
 import Main from '@/components/Main'
 import Selectors from '@/components/Selectors'
@@ -12,6 +14,7 @@ import Table from '@/components/Table'
 import Image from '@/components/Image'
 import Notes from '@/components/Notes'
 import SelectorAnalytics from '@/components/SelectorAnalytics'
+
 
 
 Vue.use(Router)
@@ -31,7 +34,7 @@ let router = new Router({
             component: Main,
             name: 'main',
             meta: {
-                requiresAuth: true
+                requiresAuth: true,
             },
             children:[
                 {
@@ -44,7 +47,8 @@ let router = new Router({
                             component: Input,
                             name:'input'
                         }
-                    ]
+                    ],
+                    meta: { transition: 'zoom' },
                 },
                 {
                     path: '/selectors/:id_selector/results/:id_result',
@@ -99,19 +103,17 @@ let router = new Router({
 
 router.beforeEach((to, from, next) => {
     if (to.matched.some(record => record.meta.requiresAuth)){
-        if (localStorage.getItem('WADtoken') == null) {
+        if (localStorage.getItem('WADtoken') == null || localStorage.getItem('WADuser') == null) {
             next('/login')
-        } else {
+        } else if (store.getters.isLoggedIn){
             next()
-        }
-    } else if (to.matched.some(record => record.meta.guest)){
-        if(localStorage.getItem('WADtoken') == null){
-            next()
-        } else {
-            next('/selectors')
         }
     } else {
-        next('/login')
+        var token = localStorage.getItem('WADtoken')
+        var user = JSON.parse(localStorage.getItem('WADuser'))
+        store.commit('auth_success',{token:token,user:user})
+        HTTP.defaults.headers['Authorization'] = 'JWT '+token
+        next()
     }
 })
 

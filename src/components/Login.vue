@@ -1,43 +1,41 @@
 <template>
-  <div class="pageoverlay">
-    <div class="loginbox">
-      <div class="overlaytop">
-        <span v-if="!showAPI">WADreporter login</span>
-        <span v-if="showAPI">WADQC API information</span>
-      </div>
-      <div class="overlaycontent">
-        <form v-if="!showAPI" class="loginform" @submit.prevent="login()">
-          <input class="textbox" required v-model="credentials.username" type="text" placeholder="Username..."/>
-          <input class="textbox" required v-model="credentials.password" type="password" placeholder="Password..."/>
-          <button class="btn btn-submit">Login</button>
-        </form>
-        <form v-if="showAPI" class="loginform" @submit.prevent="setAPI()">
-          <input class="textbox" required v-model="api.ip" type="text"/>
-          <input class="textbox" required v-model="api.port" type="text"/>
-          <button class="btn btn-submit">Opslaan</button>
-        </form>
-      </div>
-      <div class="overlayfooter">
-        <div>{{msg}}</div>
-        <div>
-          <button v-if="!showAPI" class="btn btn-small" @click="toggleView()"><i class="fas fa-cog"></i> API</button>
-          <button v-if="showAPI" class="btn btn-small" @click="toggleView()"><i class="fas fa-sign-in-alt"></i> Login</button>
+    <div class="pageoverlay">
+        <div class="loginbox">
+            <div class="overlaytop">
+                <span v-if="!showAPI">WADreporter login</span>
+                <span v-if="showAPI">WADQC API information</span>
+            </div>
+            <div class="overlaycontent">
+                <form v-if="!showAPI" class="loginform" @submit.prevent="login()">
+                    <input class="textbox" required v-model="credentials.username" type="text" placeholder="Username..."/>
+                    <input class="textbox" required v-model="credentials.password" type="password" placeholder="Password..."/>
+                    <button class="btn btn-submit">Login</button>
+                </form>
+                <form v-if="showAPI" class="loginform" @submit.prevent="setAPI()">
+                    <input class="textbox" required v-model="api.ip" type="text"/>
+                    <input class="textbox" required v-model="api.port" type="text"/>
+                    <button class="btn btn-submit">Opslaan</button>
+                </form>
+            </div>
+            <div class="overlayfooter">
+                <div>{{msg}}</div>
+                <div>
+                    <button v-if="!showAPI" class="btn btn-small" @click="toggleView()"><i class="fas fa-cog"></i> API</button>
+                    <button v-if="showAPI" class="btn btn-small" @click="toggleView()"><i class="fas fa-sign-in-alt"></i> Login</button>
+                </div>
+            </div>
         </div>
-      </div>
     </div>
-  </div>
 </template>
 
 <script>
-    import {HTTP} from '@/main'
-
-  export default {
+export default {
     data(){
-      return {
-        credentials:{username : "",password : ""},
-        msg:"",
-        showAPI:false,
-      }
+        return {
+            credentials:{username : "",password : ""},
+            msg:"",
+            showAPI:false,
+        }
     },
     computed:{
         apiURL(){
@@ -72,7 +70,7 @@
         this.msg=""
        },
     },
-  }
+}
 </script>
 
 <style scoped>
