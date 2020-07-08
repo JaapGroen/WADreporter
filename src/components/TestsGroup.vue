@@ -1,12 +1,15 @@
 <template>
     <div class="tilerow" v-if="sortedTests.length>0 && accessGranted">
         <div class="grouplabeltest" @click="maximized=!maximized">
-            <div class="labeltext">
-                Level {{level}} - {{sortedTests.length}} tests
+            <div class="grouplabel">
+                <span class="vertical-text">{{group.name}} - {{sortedTests.length}} tests</span>
             </div>
+            <!--<div class="labeltext">
+                Level {{level}} - {{sortedTests.length}} tests
+            </div>-->
         </div>
         <div class="tilegroup" v-if="maximized">
-            <TestTile v-for="test in sortedTests" v-bind:test="test" :selector="selector" :result="result" :key="test.type+test.id" :popup="popup"></TestTile>
+            <TestTile v-for="test in sortedTests" v-bind:test="test" :key="test.type+test.id"></TestTile>
         </div>
     </div>
 </template>
@@ -16,7 +19,7 @@ import TestTile from '@/components/TestTile'
 import _ from 'lodash'
 
   export default {
-    props: ['group','selector','result','level','popup'],
+    props: ['group'],
     data(){
       return {
           maximized:true
@@ -24,16 +27,17 @@ import _ from 'lodash'
     },
     computed:{
         filteredTests(){
-            const testFilter=this.$store.getters.selectorFilter
-            return this.group.filter(function(el){
-                return el.name.toLowerCase().includes(testFilter)
+            return this.group.tests.filter((test)=>{
+                return test.name.toLowerCase().includes(this.$store.getters.filter.toLowerCase()) ||
+                test.display_name.toLowerCase().includes(this.$store.getters.filter.toLowerCase()) ||
+                test.value.toLowerCase().includes(this.$store.getters.filter.toLowerCase())
             })
         },
         sortedTests(){
             var tests = _.orderBy(this.filteredTests,[
-                function (item) { return item.type=='datetime';},
-                function (item) { return item.status; },
-                function (item) { return item.display_name; }
+                function (test) { return test.type=='datetime';},
+                function (test) { return test.status; },
+                function (test) { return test.display_name; }
             ],["desc","desc","asc"])
             return tests
         },
@@ -55,6 +59,8 @@ import _ from 'lodash'
                 } else {
                     return false
                 }
+            } else {
+                return false
             }
         }
     },
@@ -65,30 +71,42 @@ import _ from 'lodash'
   }
 </script>
 
-<style>
-.grouplabeltest{
+<style scoped>
+.grouplabel{
   display:flex;
-  flex-direction:column;        /* added for add report... */
+  flex-direction:column;
   align-items:center;
-  justify-content:center;
+  justify-content:space-around;
   background:#323b47;
   height:250px;
   width:50px;
   border-radius:25px;
   margin:20px;
-  cursor:pointer;
 }
 
-.labeltext{
+.vertical-text{
   transform: rotate(270deg);
   white-space: nowrap;
 }
 
-.labelicon{
-  position:relative;
+.tilerow{
+  display:flex;
+  flex-direction:row;
+  flex-wrap:no-wrap;
+  width:100%;
 }
 
+.tilerow:nth-child(even){
+    background-color: #0c111b;
+}
 
+.tilerow:nth-child(odd){
+    background-color: #101622;
+}
 
-
+.tilegroup{
+  display:flex;
+  flex-direction:row;
+  flex-wrap:wrap;
+}
 </style>

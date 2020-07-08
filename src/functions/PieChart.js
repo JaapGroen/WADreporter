@@ -1,5 +1,4 @@
 import {Doughnut} from 'vue-chartjs'
-import ChartJSPluginZoom from 'chartjs-plugin-labels'
 
 export default {
   extends: Doughnut,

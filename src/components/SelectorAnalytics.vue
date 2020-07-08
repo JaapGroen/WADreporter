@@ -4,7 +4,7 @@
       <div class="overlaytop">
         <div v-if="analyzeResults">Analysis of the results of {{selector.name}}</div>
         <div v-if="!analyzeResults">Analysis of the tests of {{selector.name}}</div>
-        <i class="fas fa-times pointer" @click="closePopup"></i>
+        <router-link :to="{name:'result',params:{id_selector:selectorresult.selector.id,id_result:selectorresult.result.id}}" class="fas fa-times pointer" tag="i"></router-link>
       </div>
       <div class="overlaycontent">
         <div class="overlaycontentsub-v" v-if="analyzeResults">
@@ -45,11 +45,12 @@ import BarChart from '@/functions/BarChart'
 import SelectorAnalyzer from '@/functions/SelectorAnalyzer'
 
 export default {
-  props:['selector'],
+  props:[''],
   data(){
       return {
         msg:'',
         loaded:false,
+        selector:{},
         componentKey: 0,
         numberOfResults:0,
         pieChartOptions:{
@@ -113,10 +114,11 @@ export default {
             plugins:{
                 labels:{
                     render:function(args){
+                        var label
                         if (args.value>0){
-                            var label = args.value
+                            label = args.value
                         } else {
-                            var label=''
+                            label=''
                         }
                         return label
                     },
@@ -136,27 +138,28 @@ export default {
         analyzeResults:true,
       }
   },
-  mounted(){
-    this.getAllResults();
-  },
+    mounted(){
+        
+        this.getAllResults();
+    },
   methods:{
     gotoTest(name){
-        this.$router.push({name:'Tests',params:{idSelector:this.selector.id,idResult:'last'},query:{popup:name}})
-    },
-    closePopup(){
-      this.$emit('closeAnalytics','thanks')
+        HTTP.get(this.apiURL+'/selectors/'+this.$route.params.id_selector+'/results/'+this.$route.params.id_result).then((resp)=>{
+            resp.data.tests.forEach((test)=>{
+                if (test.display_name == name){
+                    this.$router.push({name:test.type,params:{id_test:test.id,}})
+                }
+            })
+        })
     },
     switchType(){
       this.analyzeResults=!this.analyzeResults
-    },
-    forceRerender(){
-      this.componentKey += 1;
     },
     reloadPieChart(){
         this.$refs.PieChart.reloadGraph();
     },
     getAllResults(){
-        SelectorAnalyzer.analyzeSelector(this.selector.id).then((data)=>{
+        SelectorAnalyzer.analyzeSelector(this.$route.params.id_selector).then((data)=>{
             this.Analytics=data
             this.pieChartData.datasets[0].data=this.Analytics.dataResults
             for (var t in this.Analytics.dataTests){
@@ -173,19 +176,25 @@ export default {
     PieChart,
     BarChart
   },
-  computed: {
-    chartStyle(){
-      return {
-        height:'100%',
-        width:'100%',
-        position: 'relative'
-      }
+    computed: {
+        chartStyle(){
+            return {
+                height:'100%',
+                width:'100%',
+            position: 'relative'
+            }
+        },
+        selectorresult(){
+            return this.$store.getters.selectorresult
+        },
+        apiURL(){
+            return 'http://'+this.$store.getters.api.ip+':'+this.$store.getters.api.port+'/api'
+        }
     },
-  },
 }
 </script>
 
-<style>
+<style scoped>
 
 
 </style>

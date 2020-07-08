@@ -1,58 +1,54 @@
 <template>
-    <div class="tablerow" v-bind:style="highlight" @mouseover="hover = true" @mouseleave="hover = false">
-        <div class="tablecell">{{note.data_tag.name}}</div>
-        <div class="tablecell">{{note.description}}</div>
-        <div class="tablecell">
+    <div class="tablerow" @mouseover="hover = true" @mouseleave="hover = false">
+        <div class="name">{{note.data_tag.name}}</div>
+        <div class="description">{{note.description}}</div>
+        <div class="buttons">
             <button class="btn btn-small" @click="deleteNote()"><i class="fas fa-trash-alt"></i> Remove note</button>
         </div>
     </div>
 </template>
 
 <script>
-import {HTTP} from '../main'
-
 export default {
-  props:['note'],
-  data(){
-      return {
-        hover:false,
-      }
-  },
-  methods:{
-    forceRerender(){
-      this.componentKey += 1;
-    },
-    deleteNote(){
-        HTTP.delete(this.apiURL+'/datasets/'+this.currentResult.data_set.id+'/notes/'+this.note.id).then(resp => {
-            console.log(resp.data)
-            HTTP.get(this.apiURL+'/selectors/'+this.currentResult.selector.id+'/results/'+this.currentResult.id).then(resp =>{
-                this.$store.dispatch('setCurrentResult',resp.data.result)
-            })
-        },(error) =>{
-            this.$store.dispatch('addMessage',{flavor:'alert-red',text:error})
-        })
-    }
-  },
-  computed:{
-    highlight: function(){
-        if (this.hover){
-            return 'background-color:#141a26;'
+    props:['note'],
+    data(){
+        return {
+            hover:false,
         }
     },
-    apiURL(){
-        return 'http://'+this.$store.getters.api.ip+':'+this.$store.getters.api.port+'/api'
+    methods:{
+        forceRerender(){
+            this.componentKey += 1;
+        },
+        deleteNote(){
+            this.$emit('deleteNote',this.note)
+        }
     },
-    currentResult(){
-        return this.$store.getters.currentResult
-    },
-  }
+    computed:{
+        apiURL(){
+            return 'http://'+this.$store.getters.api.ip+':'+this.$store.getters.api.port+'/api'
+        },
+    }
 }
 
 </script>
 
-<style>
+<style scoped>
+.name{
+    padding-left:5px;
+    padding-right:5px;
+    flex:1 0 0;
+}
 
+.description{
+    padding-left:5px;
+    padding-right:5px;
+    flex:2 0 0;
+}
 
-
-
+.buttons{
+    padding-left:5px;
+    padding-right:5px;
+    width:190px;
+}
 </style>

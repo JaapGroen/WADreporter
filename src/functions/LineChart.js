@@ -1,5 +1,4 @@
 import { Line } from 'vue-chartjs'
-import ChartJSPluginZoom from 'chartjs-plugin-zoom'
 
 export default {
   extends: Line,
