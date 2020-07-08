@@ -30,11 +30,23 @@ export default {
     },
     methods:{
         getResult(){
-            HTTP.get(this.apiURL+'/selectors/'+this.$route.params.id_selector+'/results/'+this.$route.params.id_result).then(resp => {
-                this.tests = resp.data.tests
-                this.$store.commit('setSelectorResult',{selector:resp.data.selector,result:resp.data.result})
+            if (this.lastresult == undefined){
+                HTTP.get(this.apiURL+'/selectors/'+this.$route.params.id_selector+'/results/'+this.$route.params.id_result).then(resp => {
+                    this.tests = resp.data.tests
+                    this.$store.commit('setSelectorResult',{selector:resp.data.selector,result:resp.data.result})
+                    this.loading = false
+                })
+            } else if (this.lastresult.result.id == this.$route.params.id_result){
+                this.tests = this.lastresult.tests
+                this.$store.commit('setSelectorResult',{selector:this.lastresult.selector,result:this.lastresult.result})
                 this.loading = false
-            })
+            } else {
+                HTTP.get(this.apiURL+'/selectors/'+this.$route.params.id_selector+'/results/'+this.$route.params.id_result).then(resp => {
+                    this.tests = resp.data.tests
+                    this.$store.commit('setSelectorResult',{selector:resp.data.selector,result:resp.data.result})
+                    this.loading = false
+                })
+            }
         }
     },
     computed:{
@@ -58,6 +70,9 @@ export default {
         },
         apiURL(){
             return 'http://'+this.$store.getters.api.ip+':'+this.$store.getters.api.port+'/api'
+        },
+        lastresult(){
+            return this.$store.getters.lastresult(this.$route.params.id_selector)
         }
     },   
    components: {

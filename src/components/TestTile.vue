@@ -165,7 +165,7 @@ import {HTTP} from '../main'
             return ypos
         },
         ordered_results(){
-            return _.orderBy(this.results, 'date','desc')
+            return _.orderBy(this.results, [(result)=>{return new Date(result.date)}],['desc']);
         }
     },
   filters:{

@@ -94,7 +94,11 @@ export default {
             this.$store.commit('setFilter','')
         },
         reloadSelectors(){
-            window.history.go()
+            this.$store.dispatch('getSelectors').then(()=>{
+                this.$store.dispatch('clearLastResults').then(()=>{
+                    window.history.go()
+                })
+            })
         },
     },
 	components:{

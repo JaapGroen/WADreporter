@@ -11,7 +11,9 @@ export default new Vuex.Store({
     filter: '',
     api:{ip:'localhost',port:'3000'},
     selectorresult:{},
-    messages:[]
+    messages:[],
+    cache:{selectors:[],lastresults:{}}
+    
   },
     mutations: {
         auth_success(state, data){
@@ -46,6 +48,15 @@ export default new Vuex.Store({
             if (index > -1) {
                 state.messages.splice(index, 1);
             }
+        },
+        setSelectors(state,selectors){
+            state.cache.selectors = selectors
+        },
+        setLastResult(state,lastresult){
+            state.cache.lastresults[lastresult.selector.id] = lastresult
+        },
+        clearLastResults(state){
+            state.cache.lastresults={}
         }
     },
     actions: {
@@ -135,14 +146,45 @@ export default new Vuex.Store({
             reject(false)
           })
         },
+        getSelectors({commit}){
+            return new Promise((resolve, reject) => {
+                HTTP.get('http://'+this.state.api.ip+':'+this.state.api.port+'/api/selectors').then((resp)=>{
+                    commit('setSelectors',resp.data.selectors)
+                    resolve(true)
+                }).catch((error)=>{
+                    reject(error)
+                })
+            })
+        },
+        setLastResult({commit},lastresult){
+            return new Promise((resolve,reject) =>{
+                try {
+                    commit('setLastResult',lastresult)
+                    resolve(true)
+                } catch(error) {
+                    reject(error)
+                }
+            })
+        },
+        clearLastResults({commit}){
+            return new Promise((resolve,reject) =>{
+                try {
+                    commit('clearLastResults')
+                    resolve(true)
+                } catch(error) {
+                    reject(error)
+                }
+            })
+        }
     },
     getters : {
         isLoggedIn: state => !!state.token && !!state.user,
-        // authStatus: state => state.status,
         user: state => state.user,
         filter: state => state.filter,
         api: state => state.api,
         selectorresult: state => state.selectorresult,
-        messages: state => state.messages
+        messages: (state) => state.messages,
+        selectors: (state) => state.cache.selectors,
+        lastresult: (state) => (id) => state.cache.lastresults[id]
     }
 })

@@ -7,10 +7,10 @@
             <i class="fas fa-sun fa-2x fa-spin"></i>
         </div>
         <div class="item_content" v-else-if="!result">
-            {{selector.description}}
+            {{selector.description | no_groupname}}
         </div>
         <router-link :to="{name:'result',params:{id_selector:selector.id,id_result:result.id}}" tag="div" class="item_content" v-else>
-            {{selector.description}}
+            {{selector.description | no_groupname}}
         </router-link>
         <div class="item_footer pointer" v-bind:class="dateclass">
             <router-link :to="{name:'input',params:{id_selector:selector.id,id_process:openProcesses[0].id}}" v-if="openProcesses.length>0" tag="div" class="awaiting">
@@ -40,28 +40,33 @@ import {HTTP} from '../main'
             openProcesses:[]
         }
     },
-  created(){
-      this.getLastResult()
-  },
+    created(){
+        this.getLastResult()
+    },
     components:{
-        // InputView
     },
     methods:{
         getLastResult(){
-            HTTP.get(this.apiURL+'/selectors/'+this.selector.id+'/results/last').then((resp)=>{
-                this.result = resp.data.result
+            if (this.lastresult == undefined){
+                HTTP.get(this.apiURL+'/selectors/'+this.selector.id+'/results/last').then((resp)=>{
+                    this.result = resp.data.result
+                    this.$store.dispatch('setLastResult',resp.data)
+                    this.loading = false
+                },(error)=>{
+                    if (error.response.status == 404){
+                        // console.clear();
+                        HTTP.get(this.apiURL+'/selectors/'+this.selector.id+'/processes').then(resp =>{
+                            this.openProcesses = resp.data.processes['waiting for input']
+                            this.result = false
+                            this.loading = false
+                        })
+                        
+                    }
+                })
+            } else {
+                this.result = this.lastresult.result
                 this.loading = false
-            },(error)=>{
-                if (error.response.status == 404){
-                    // console.clear();
-                    HTTP.get(this.apiURL+'/selectors/'+this.selector.id+'/processes').then(resp =>{
-                        this.openProcesses = resp.data.processes['waiting for input']
-                        this.result = false
-                        this.loading = false
-                    })
-                    
-                }
-            })
+            }
         },
     },
     computed:{
@@ -81,6 +86,9 @@ import {HTTP} from '../main'
         },
         apiURL(){
             return 'http://'+this.$store.getters.api.ip+':'+this.$store.getters.api.port+'/api'
+        },
+        lastresult(){
+            return this.$store.getters.lastresult(this.selector.id)
         }
     },
     filters:{
@@ -99,6 +107,14 @@ import {HTTP} from '../main'
             let time_diff = Math.abs(toFormat.getTime() - currentDate.getTime());
             let diff_days = Math.ceil(time_diff / (1000 * 3600 * 24));
             return diff_days + ' days ago'
+        },
+        no_groupname: description =>{
+            if (description.includes('[') && description.includes(']')){
+                var groupname = description.substring(description.indexOf("["),description.indexOf("]")+1)
+                return description.replace(groupname,'')
+            } else {
+                return description
+            }
         }
     }
 }

@@ -6,23 +6,25 @@
 
 <script>
 import SelectorsGroup from '@/components/SelectorsGroup'
-import {HTTP} from '../main'
 import _ from 'lodash'
 
 export default {
     data(){
         return {
-            selectors:[],
+            // selectors:[],
             loading: true,
         }
     },
     methods:{
         getSelectors(){
-            HTTP.get(this.apiURL+'/selectors').then(resp => {
-                this.selectors = resp.data.selectors
-                this.$store.commit('setSelectorResult',{})
+            this.$store.commit('setSelectorResult',{})
+            if (this.selectors.length==0){
+                this.$store.dispatch('getSelectors').then(()=>{
+                    this.loading = false
+                })
+            } else {
                 this.loading = false
-            })
+            }
         }
     },
     mounted(){
@@ -35,28 +37,35 @@ export default {
         apiURL(){
             return 'http://'+this.$store.getters.api.ip+':'+this.$store.getters.api.port+'/api'
         },
+        selectors(){
+            return this.$store.getters.selectors
+        },
         groupedSelectors(){
-            var groups = []
-            if (!this.loading){
-                this.selectors.forEach((selector)=>{
-                    var groupname = "[no group]"
-                    if (selector.description.includes('[') && selector.description.includes(']')){
-                        groupname = selector.description.substring(selector.description.indexOf("["),selector.description.indexOf("]")+1)
-                        this.$set(selector, 'description', selector.description.replace(groupname,''))
-                    }
-                    var group = groups.filter(group => group.name === groupname)
-                    if (group.length==0){
-                        groups.push({name:groupname,selectors:[selector]})
-                    } else {
-                        group[0].selectors.push(selector)
-                    }
-                })
+            if(!this.loading){
+                var groups = []
+                if (!this.loading){
+                    this.selectors.forEach((selector)=>{
+                        var groupname = "[no group]"
+                        if (selector.description.includes('[') && selector.description.includes(']')){
+                            groupname = selector.description.substring(selector.description.indexOf("["),selector.description.indexOf("]")+1)
+                        }
+                        var group = groups.filter(group => group.name === groupname)
+                        if (group.length==0){
+                            groups.push({name:groupname,selectors:[selector]})
+                        } else {
+                            group[0].selectors.push(selector)
+                        }
+                    })
+                }
+                return groups
+            } else {
+                return []
             }
-            return groups
         },
         orderedGroups(){
             return _.orderBy(this.groupedSelectors, 'name','asc')
-        }
+        },
+
     },
     
 }
