@@ -19,13 +19,13 @@
                     <button @click="reloadGraph()" class="btn btn-small" ><i class="fas fa-sync"></i> Reload</button>
                 </div>
                 <div v-if="!loading">
-                    <button @click="openAdd" v-if="buttons.openadd" class="btn btn-small"><i class="fas fa-plus-square"></i> open Add</button>
+                    <button @click="openAdd" v-if="buttons.openadd" class="btn btn-small"><i class="fas fa-plus-square"></i> Add</button>
                     <span v-if="chartData.datasets.length>1">
-                        <button @click="openRemove" v-if="buttons.openremove" class="btn btn-small"><i class="fas fa-minus-square"></i> open Remove</button>
+                        <button @click="openRemove" v-if="buttons.openremove" class="btn btn-small"><i class="fas fa-minus-square"></i> Remove</button>
                     </span>
 
                     <select v-if="selects.selector" class="date_select" v-model="selected_selector" @change="setSelectedSelector">
-                        <option v-for="selector in selectors" v-bind:value="selector" :key="selector.id">{{selector.name}}</option>
+                        <option v-for="selector in orderedSelectors" v-bind:value="selector" :key="selector.id">{{selector.name}} ({{selector.id}})</option>
                     </select>
 
 
@@ -34,7 +34,7 @@
                     </select>
 
                     <select v-if="selects.test" class="date_select" v-model="selected_test">
-                        <option v-for="test in tests" v-bind:value="test" :key="test.id">{{test.display_name || test.name}}</option>
+                        <option v-for="test in orderedTests" v-bind:value="test" :key="test.id">{{test.display_name || test.name}}</option>
                     </select>
                     
                     <button @click="addtoPlot" v-if="buttons.addtest && selected_test.display_name!='Choose a test'" class="btn btn-small"><i class="fas fa-plus-square"></i> Add test</button>
@@ -56,7 +56,7 @@
 import DataLoader from '@/functions/DataLoader'
 import LineChart from '@/functions/LineChart.js'
 import {HTTP} from '../main'
-// import {Line} from 'vue-chartjs'
+import _ from 'lodash'
 
 export default {
     data(){
@@ -164,7 +164,7 @@ export default {
         openAdd(){
             HTTP.get(this.apiURL+'/selectors').then((resp)=>{
                 this.selectors = resp.data.selectors
-                this.selectors.unshift({name:'Choose a selector'})
+                this.selectors.unshift({name:'Choose a selector',id:0})
                 this.selected_selector=this.selectors[0]
             })
             this.buttons={openadd:false,openremove:false,addtest:false,removedataset:false,cancel:true}
@@ -245,6 +245,12 @@ export default {
         },
         apiURL(){
             return 'http://'+this.$store.getters.api.ip+':'+this.$store.getters.api.port+'/api'
+        },
+        orderedSelectors(){
+            return _.orderBy(this.selectors,'id','asc');
+        },
+        orderedTests(){
+            return _.orderBy(this.tests,'display_name','asc');
         },
     }
 }

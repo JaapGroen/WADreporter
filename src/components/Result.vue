@@ -7,7 +7,7 @@
             </div>
             <div class="item_footer"></div>
         </div>
-        <TestsGroup v-for="group in groupedTests" v-bind:group="group" :key="group.name"></TestsGroup>
+        <TestsGroup v-for="group in orderedGroups" v-bind:group="group" :key="group.name"></TestsGroup>
         <router-view></router-view>
     </div>
 </template>
@@ -15,6 +15,7 @@
 <script>
 import {HTTP} from '../main'
 import TestsGroup from '@/components/TestsGroup'
+import _ from 'lodash'
 
   
 export default {
@@ -67,6 +68,9 @@ export default {
                 })
             }
             return groups
+        },
+        orderedGroups(){
+            return _.orderBy(this.groupedTests,'name','asc');
         },
         apiURL(){
             return 'http://'+this.$store.getters.api.ip+':'+this.$store.getters.api.port+'/api'

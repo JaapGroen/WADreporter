@@ -9,7 +9,7 @@ export default new Vuex.Store({
     token: localStorage.getItem('WADtoken') || '',
     user : JSON.parse(localStorage.getItem('WADuser')) || '',
     filter: '',
-    api:{ip:'<wadqc api ip here>',port:'<wadqc api port here>'},
+    api:{ip:'localhost',port:'3000'},
     selectorresult:{},
     messages:[],
     cache:{selectors:[],lastresults:{}}

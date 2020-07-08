@@ -1,4 +1,5 @@
 import { Line } from 'vue-chartjs'
+import zoom from 'chartjs-plugin-zoom'
 
 export default {
   extends: Line,
@@ -13,7 +14,8 @@ export default {
     }
   },
   mounted () {
-    this.renderChart(this.chartdata, this.options)
+      this.addPlugin(zoom);
+      this.renderChart(this.chartdata, this.options)
   },
   methods:{
       resetZoom(){
