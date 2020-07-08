@@ -4,14 +4,14 @@
 
 
 ## Prerequisites
-* WADQC-server (https://bitbucket.org/MedPhysNL/wadqc/downloads/)
+* WADQC-server (https://bitbucket.org/MedPhysNL/wadqc/downloads/) using the latest wadapi branch
 * Nodejs (https://nodejs.org/en/download/)
 * Vue CLI (https://cli.vuejs.org/guide/installation.html)
 
 ## Installation
 * Clone the repository
 ``` bash
-> git clone https://github.com/JaapGroen/WADreporter2.git WADreporter
+> git clone https://github.com/JaapGroen/WADreporter.git WADreporter
 ```
 * Enter folder and install dependencies with npm
 ``` bash
@@ -24,7 +24,7 @@
 ```
 
 ## Production
-* Optionally edit the pre-filled api information in src/store/store.js, line 12
+* Optionally edit the pre-filled api information in src/store/store.js, line 12, replacing <wadqc api ip here> and <wadqc api port here>
 ``` bash
 > nano src/store/store.js
 ```
